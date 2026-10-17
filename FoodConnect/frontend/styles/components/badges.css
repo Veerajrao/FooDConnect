@@ -1,0 +1,53 @@
+/* ==========================================================
+   BADGES AND TAGS - tier badges (Bronze to Platinum) and small labels.
+   Used by Hall of Fame, Available food and the dashboards.
+   ========================================================== */
+
+/* BADGE: rounded label that shows a donor's tier (colour comes from --c) */
+.badge {
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-weight: 600;
+  font-size: .85rem;
+  color: #fff;
+  background: var(--c);
+}
+
+/* Badge colours for each recognition tier */
+.t-Bronze {
+  --c: #b0713a;
+}
+
+.t-Silver {
+  --c: #7d8a96;
+}
+
+.t-Gold {
+  --c: #d49a0d;
+}
+
+.t-Platinum {
+  --c: #3f6fb5;
+}
+
+/* TAGS: small labels such as Veg, Serves 60, Pending */
+.tag {
+  display: inline-block;
+  background: #e4f0ea;
+  color: var(--g);
+  border-radius: 6px;
+  padding: 2px 9px;
+  font-size: .82rem;
+  font-weight: 600;
+  margin: 0 4px 4px 0;
+}
+
+.tag.warn {
+  background: #fde6e0;
+  color: var(--tom);
+}
+
+.tag.amb {
+  background: #fff1d1;
+  color: #7a5200;
+}

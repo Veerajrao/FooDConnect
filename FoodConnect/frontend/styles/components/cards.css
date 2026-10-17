@@ -1,0 +1,33 @@
+/* ==========================================================
+   CARDS - the responsive card grid used by Home, Who can join, Guide,
+   Hall of Fame, Available food and the dashboards.
+   ========================================================== */
+
+/* CARDS: responsive grid that fits as many cards as the screen allows */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--w);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+}
+
+.card p {
+  color: var(--mut);
+}
+
+.ico {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 8px;
+}

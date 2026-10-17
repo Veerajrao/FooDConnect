@@ -1,0 +1,50 @@
+/* ==========================================================
+   DASHBOARD PAGE (dashboard.html) - tab buttons and tables.
+   ========================================================== */
+
+/* Dashboard tab buttons (admin) */
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.tabs button {
+  padding: 8px 16px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font: 600 .95rem inherit;
+  cursor: pointer;
+}
+
+.tabs button.on {
+  background: var(--g);
+  color: #fff;
+}
+
+/* TABLES used in the dashboards */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  font-size: .95rem;
+}
+
+th {
+  background: #eaf0ec;
+}
+
+.tw {
+  overflow-x: auto;
+}

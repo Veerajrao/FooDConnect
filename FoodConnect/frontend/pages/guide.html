@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guide and food safety – FoodConnect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Source+Sans+3:wght@400;600&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <!-- Stylesheets: shared first, then this page's own, and responsive.css LAST so phone rules win -->
+  <link rel="stylesheet" href="../styles/common/global.css">
+  <link rel="stylesheet" href="../styles/common/layout.css">
+  <link rel="stylesheet" href="../styles/components/cards.css">
+  <link rel="stylesheet" href="../styles/pages/guide.css">
+  <link rel="stylesheet" href="../styles/components/forms.css">
+  <link rel="stylesheet" href="../styles/components/welcome-modal.css">
+  <link rel="stylesheet" href="../styles/common/responsive.css">
+</head>
+
+<body data-page="guide">
+  <!-- TOP BAR: logo and menu (the menu links are built by scripts/common/navigation.js) -->
+  <header>
+    <div class="logo" onclick="go('home')" onkeydown="if(event.key==='Enter')go('home')" tabindex="0" role="link"><img
+        class="logo-img" src="../assets/images/logo.png" alt="" width="40" height="45"><span
+        class="logo-txt">Food<span>Connect</span></span></div>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav"
+      onclick="toggleMenu()"><span></span><span></span><span></span></button>
+    <nav id="nav"></nav>
+  </header>
+  <!-- Dark overlay behind the mobile side menu; tap it to close the menu -->
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
+  <!-- MAIN: the content of this page -->
+  <main>
+
+    <!-- GUIDE: step-by-step help, food-safety tips and FAQ -->
+    <section id="guide">
+      <div class="wrap">
+        <h2>Guide and food safety</h2>
+        <p class="lead">A short checklist so every meal we move is safe to eat.</p>
+        <div class="grid" style="margin-bottom:30px">
+          <div class="card">
+            <h3>For donors</h3>
+            <p>Create an account, choose Donor, and post food in the dashboard. Include the food type, servings,
+              address, and the time by which it must be collected. Approve the organisation that can reach you soonest.
+            </p>
+          </div>
+          <div class="card">
+            <h3>For organisations</h3>
+            <p>Register as a Recipient Organisation, browse listings, and request what you can serve. Send a vehicle and
+              containers at the agreed pickup time.</p>
+          </div>
+          <div class="card">
+            <h3>Food safety</h3>
+            <p>Donate only freshly cooked or properly sealed food. Keep it covered, label the cooking time, and never
+              post food that has already been served from or has spoiled.</p>
+          </div>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Does it cost anything?</summary>
+            <p>No. FoodConnect is a non-profit and free for donors and organisations.</p>
+          </details>
+          <details>
+            <summary>How long does food stay safe?</summary>
+            <p>Cooked food should be collected within 2 to 4 hours. Use the “Collect before” field so organisations know
+              the limit.</p>
+          </details>
+          <details>
+            <summary>Can I donate from a small home function?</summary>
+            <p>Yes. Even 10 servings make a difference to a small shelter.</p>
+          </details>
+          <details>
+            <summary>How do I earn a badge?</summary>
+            <p>Each completed donation adds to your total servings. See the tiers on the Hall of Fame page.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <!-- FOOTER -->
+  <footer>
+    <img class="foot-logo" src="../assets/images/logo.png" alt="FoodConnect logo" width="56" height="63">
+    <p><b>FoodConnect</b> is a non-profit food redistribution platform.</p>
+    <p>Reduce food waste. Increase social impact. Connect surplus food with those who need it most.</p>
+  </footer>
+
+
+  <!-- WELCOME POPUP: shown when the site opens (if not logged in). "Maybe later" closes it. -->
+  <div class="modal" id="welcome" role="dialog" aria-modal="true" aria-labelledby="wTitle" hidden>
+    <div class="modal-box">
+      <button class="modal-x" type="button" aria-label="Close" onclick="closeWelcome()">&times;</button>
+      <img class="modal-logo" src="../assets/images/logo.png" alt="FoodConnect logo" width="72" height="80">
+      <h2 id="wTitle">Welcome to FoodConnect</h2>
+      <p class="wsub">Log in to donate or request food.</p>
+      <div class="msg" id="wMsg" role="alert"></div>
+      <form id="wForm">
+        <div class="roles">
+          <label class="ro"><input type="radio" name="wrole" value="donor" checked><span>🍲<b>Donor</b></span></label>
+          <label class="ro"><input type="radio" name="wrole"
+              value="recipient"><span>🏛️<b>Organisation</b></span></label>
+          <label class="ro"><input type="radio" name="wrole" value="admin"><span>🛡️<b>Admin</b></span></label>
+        </div>
+        <label>Email<input type="email" id="wEmail" autocomplete="username" required></label>
+        <label>Password<input type="password" id="wPass" autocomplete="current-password" required></label>
+        <button class="btn dk">Log in</button>
+      </form>
+      <p class="wlinks">New here? <a href="register.html" onclick="closeWelcome()">Create an account</a></p>
+      <button type="button" class="later" onclick="closeWelcome()">Maybe later</button>
+    </div>
+  </div>
+
+  <!-- Scripts: shared code first (the order matters), then this page's own script -->
+  <script src="../scripts/common/helpers.js"></script>
+  <script src="../scripts/common/data.js"></script>
+  <script src="../scripts/common/navigation.js"></script>
+  <script src="../scripts/common/welcome.js"></script>
+</body>
+
+</html>

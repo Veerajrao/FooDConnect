@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FoodConnect – Reduce Food Waste, Increase Social Impact</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Source+Sans+3:wght@400;600&display=swap"
+    rel="stylesheet">
+  <!-- Stylesheet: all colours, layout and responsive rules live in style.css -->
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <link rel="stylesheet" href="../styles/style.css">
+</head>
+
+<body>
+  <!-- TOP BAR: logo and menu (the menu links are built by script.js) -->
+  <header>
+    <div class="logo" onclick="go('home')" onkeydown="if(event.key==='Enter')go('home')" tabindex="0" role="link"><img
+        class="logo-img" src="../assets/images/logo.png" alt="" width="40" height="45"><span
+        class="logo-txt">Food<span>Connect</span></span></div>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav"
+      onclick="toggleMenu()"><span></span><span></span><span></span></button>
+    <nav id="nav"></nav>
+  </header>
+  <!-- Dark overlay behind the mobile side menu; tap it to close the menu -->
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
+  <!-- MAIN: every page below is a <section class="pg">; only one is shown at a time -->
+  <main>
+
+    <!-- HOME: hero banner, impact counters, how it works, benefits for businesses -->
+    <section class="pg" id="home">
+      <div class="hero">
+        <div class="in">
+          <div>
+            <h1>Good food belongs on a plate, not in a bin.</h1>
+            <p>FoodConnect links weddings, hotels, caterers and homes that have surplus food with NGOs, orphanages,
+              old-age homes and shelters that can serve it while it is fresh.</p>
+            <a class="btn" href="#register">Donate surplus food</a><a class="btn alt" href="#listings">See available
+              food</a>
+          </div>
+          <div class="plate">
+            <h3>Our impact so far</h3>
+            <div class="stat"><span>Meals shared</span><b id="sMeals">0</b></div>
+            <div class="stat"><span>Donations completed</span><b id="sDon">0</b></div>
+            <div class="stat"><span>Registered donors</span><b id="sDonors">0</b></div>
+            <div class="stat"><span>Partner organisations</span><b id="sOrgs">0</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <h2>How FoodConnect works</h2>
+        <p class="lead">Five simple steps from leftover food to a full stomach.</p>
+        <div class="steps">
+          <div><b>Donor posts food</b><br>Add what is available, how many it serves, and the pickup time.</div>
+          <div><b>Organisation browses</b><br>Verified NGOs and homes see live listings.</div>
+          <div><b>Organisation requests</b><br>One click sends a request to the donor.</div>
+          <div><b>Donor approves</b><br>The donor accepts the request that suits best.</div>
+          <div><b>Food is collected</b><br>It is picked up, served, and the donor earns recognition.</div>
+        </div>
+      </div>
+      <div class="band">
+        <div class="wrap">
+          <h2>Why businesses join</h2>
+          <p class="lead">Donating is more than kindness. It builds a name people trust.</p>
+          <div class="grid">
+            <div class="card"><span class="ico">🏅</span>
+              <h3>Public recognition</h3>
+              <p>Your name appears in our Hall of Fame with a tier badge.</p>
+            </div>
+            <div class="card"><span class="ico">📜</span>
+              <h3>Certificates</h3>
+              <p>Download a certificate of appreciation to display at your outlet.</p>
+            </div>
+            <div class="card"><span class="ico">📊</span>
+              <h3>Impact statistics</h3>
+              <p>See how many meals you have shared and keep a record of each gift.</p>
+            </div>
+            <div class="card"><span class="ico">🤝</span>
+              <h3>Customer trust</h3>
+              <p>Show guests you run a responsible, caring business.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO CAN JOIN: donor types, recipient types and the admin role -->
+    <section class="pg" id="domains">
+      <div class="wrap">
+        <h2>Who can take part</h2>
+        <p class="lead">FoodConnect has three kinds of accounts, each with its own login and tools.</p>
+        <h3 style="margin-bottom:12px">Food providers (donors)</h3>
+        <div class="grid" style="margin-bottom:34px">
+          <div class="card"><span class="ico">🎉</span>
+            <h3>Individuals</h3>
+            <p>Birthdays, weddings, festivals and family functions with food to spare.</p>
+          </div>
+          <div class="card"><span class="ico">🏨</span>
+            <h3>Hotels</h3>
+            <p>Buffet and banquet surplus at the end of service.</p>
+          </div>
+          <div class="card"><span class="ico">🍽️</span>
+            <h3>Restaurants</h3>
+            <p>Unsold, safe, freshly cooked meals.</p>
+          </div>
+          <div class="card"><span class="ico">🥘</span>
+            <h3>Caterers</h3>
+            <p>Extra food from large orders and events.</p>
+          </div>
+          <div class="card"><span class="ico">📋</span>
+            <h3>Event organisers</h3>
+            <p>Conferences, fairs and community events.</p>
+          </div>
+        </div>
+        <h3 style="margin-bottom:12px">Food receivers (recipient organisations)</h3>
+        <div class="grid" style="margin-bottom:34px">
+          <div class="card"><span class="ico">🏛️</span>
+            <h3>NGOs and charities</h3>
+            <p>Community kitchens and charitable trusts.</p>
+          </div>
+          <div class="card"><span class="ico">🧒</span>
+            <h3>Orphanages</h3>
+            <p>Meals for children in care.</p>
+          </div>
+          <div class="card"><span class="ico">👵</span>
+            <h3>Old-age homes</h3>
+            <p>Fresh food for elders.</p>
+          </div>
+          <div class="card"><span class="ico">🛕</span>
+            <h3>Ashramas and shelters</h3>
+            <p>Help for people without a meal.</p>
+          </div>
+        </div>
+        <h3 style="margin-bottom:12px">Administrators</h3>
+        <div class="card">
+          <p>Admins verify organisations, keep listings safe and fair, and watch overall impact from the dashboard.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- GUIDE: step-by-step help, food-safety tips and FAQ -->
+    <section class="pg" id="guide">
+      <div class="wrap">
+        <h2>Guide and food safety</h2>
+        <p class="lead">A short checklist so every meal we move is safe to eat.</p>
+        <div class="grid" style="margin-bottom:30px">
+          <div class="card">
+            <h3>For donors</h3>
+            <p>Create an account, choose Donor, and post food in the dashboard. Include the food type, servings,
+              address, and the time by which it must be collected. Approve the organisation that can reach you soonest.
+            </p>
+          </div>
+          <div class="card">
+            <h3>For organisations</h3>
+            <p>Register as a Recipient Organisation, browse listings, and request what you can serve. Send a vehicle and
+              containers at the agreed pickup time.</p>
+          </div>
+          <div class="card">
+            <h3>Food safety</h3>
+            <p>Donate only freshly cooked or properly sealed food. Keep it covered, label the cooking time, and never
+              post food that has already been served from or has spoiled.</p>
+          </div>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Does it cost anything?</summary>
+            <p>No. FoodConnect is a non-profit and free for donors and organisations.</p>
+          </details>
+          <details>
+            <summary>How long does food stay safe?</summary>
+            <p>Cooked food should be collected within 2 to 4 hours. Use the “Collect before” field so organisations know
+              the limit.</p>
+          </details>
+          <details>
+            <summary>Can I donate from a small home function?</summary>
+            <p>Yes. Even 10 servings make a difference to a small shelter.</p>
+          </details>
+          <details>
+            <summary>How do I earn a badge?</summary>
+            <p>Each completed donation adds to your total servings. See the tiers on the Hall of Fame page.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- HALL OF FAME: recognition tiers and the ranked list of donors (list is filled by script.js) -->
+    <section class="pg" id="fame">
+      <div class="wrap">
+        <h2>Hall of Fame</h2>
+        <p class="lead">We honour the people and businesses who turn surplus into support. Recognition is based on meals
+          shared through completed donations.</p>
+        <div class="grid" style="margin-bottom:34px">
+          <div class="card tier t-Bronze" style="--c:#b0713a">
+            <div class="m">🥉</div>
+            <h3>Bronze Giver</h3>
+            <p>First donation completed</p>
+          </div>
+          <div class="card tier t-Silver" style="--c:#7d8a96">
+            <div class="m">🥈</div>
+            <h3>Silver Giver</h3>
+            <p>200 meals shared</p>
+          </div>
+          <div class="card tier t-Gold" style="--c:#d49a0d">
+            <div class="m">🥇</div>
+            <h3>Gold Giver</h3>
+            <p>1,000 meals shared</p>
+          </div>
+          <div class="card tier t-Platinum" style="--c:#3f6fb5">
+            <div class="m">💎</div>
+            <h3>Platinum Champion</h3>
+            <p>3,000 meals shared</p>
+          </div>
+        </div>
+        <h3 style="margin-bottom:12px">Top donors</h3>
+        <div class="fame" id="fameList"></div>
+      </div>
+    </section>
+
+    <!-- AVAILABLE FOOD: live listings that organisations can request -->
+    <section class="pg" id="listings">
+      <div class="wrap">
+        <h2>Available food</h2>
+        <p class="lead">Live listings from donors. Organisations can log in to request food.</p>
+        <div class="msg" id="lmsg"></div>
+        <div class="grid" id="listGrid"></div>
+      </div>
+    </section>
+
+    <!-- LOG IN / REGISTER: one page with a switch tab; showTab() in script.js shows the right form -->
+    <section class="pg" id="auth">
+      <div class="wrap">
+        <div class="authgrid">
+          <aside class="authside">
+            <h2 id="asTitle"></h2>
+            <p id="asText"></p>
+            <ul>
+              <li>Donors: individuals, hotels, restaurants, caterers and event organisers</li>
+              <li>Receivers: NGOs, orphanages, old-age homes, ashramas, shelters and community kitchens</li>
+              <li>Donors earn badges, a place in the Hall of Fame and certificates</li>
+              <li>Admins verify organisations and keep listings safe</li>
+            </ul>
+          </aside>
+          <div class="authcard">
+            <div class="sw" role="tablist">
+              <button role="tab" id="tabLogin" onclick="go('login')">Log in</button>
+              <button role="tab" id="tabReg" onclick="go('register')">Register</button>
+            </div>
+            <div class="msg" id="aMsg" role="alert"></div>
+
+            <!-- Login form: choose role, enter email and password -->
+            <form id="loginForm">
+              <fieldset>
+                <legend>I am logging in as</legend>
+                <div class="roles">
+                  <label class="ro"><input type="radio" name="lrole" value="donor"
+                      checked><span>🍲<b>Donor</b><small>Food provider</small></span></label>
+                  <label class="ro"><input type="radio" name="lrole"
+                      value="recipient"><span>🏛️<b>Organisation</b><small>NGO, home, shelter</small></span></label>
+                  <label class="ro"><input type="radio" name="lrole" value="admin"><span>🛡️<b>Admin</b><small>Platform
+                        team</small></span></label>
+                </div>
+              </fieldset>
+              <label>Email<input type="email" id="lEmail" autocomplete="username" required></label>
+              <label>Password<input type="password" id="lPass" autocomplete="current-password" required></label>
+              <button class="btn dk">Log in</button>
+              <p>New to FoodConnect? <a href="#register">Create an account</a></p>
+              <div class="hint"><b>Try a demo account</b>
+                <div class="demo"><button type="button" class="btn sm dk" onclick="demo('donor')">Donor</button><button
+                    type="button" class="btn sm dk" onclick="demo('recipient')">Organisation</button><button
+                    type="button" class="btn sm dk" onclick="demo('admin')">Admin</button></div>
+              </div>
+            </form>
+
+            <!-- Register form: choose role, account type, details and password -->
+            <form id="regForm">
+              <fieldset>
+                <legend>I want to join as</legend>
+                <div class="roles">
+                  <label class="ro"><input type="radio" name="rrole" value="donor" checked><span>🍲<b>Donor</b><small>I
+                        have surplus food</small></span></label>
+                  <label class="ro"><input type="radio" name="rrole"
+                      value="recipient"><span>🏛️<b>Organisation</b><small>We need food</small></span></label>
+                </div>
+              </fieldset>
+              <label>Type<select id="rType"></select></label>
+              <label><span id="rNameLbl">Full name or business name</span><input id="rName" autocomplete="organization"
+                  required></label>
+              <div class="two">
+                <label>Email<input type="email" id="rEmail" autocomplete="email" required></label>
+                <label>Phone<input type="tel" id="rPhone" pattern="[0-9+ ]{10,15}" title="Enter 10 to 15 digits"
+                    required></label>
+              </div>
+              <div class="two">
+                <label>City or area<input id="rCity" required></label>
+                <label id="rRegWrap" style="display:none">Registration number<input id="rReg"></label>
+              </div>
+              <div class="two">
+                <label>Password<input type="password" id="rPass" minlength="6" autocomplete="new-password"
+                    required></label>
+                <label>Confirm password<input type="password" id="rPass2" minlength="6" autocomplete="new-password"
+                    required></label>
+              </div>
+              <label class="chk"><input type="checkbox" id="rTerms" required><span>I will donate or collect only safe,
+                  fresh food and follow the FoodConnect guide.</span></label>
+              <button class="btn dk">Create account</button>
+              <p>Already registered? <a href="#login">Log in</a></p>
+              <p id="rNote" class="hint" style="display:none">Organisation accounts are verified by an admin before they
+                are marked as trusted.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD: content depends on role (donor, organisation or admin) and is built by script.js -->
+    <section class="pg" id="dash">
+      <div class="wrap" id="dashBody"></div>
+    </section>
+
+  </main>
+  <!-- FOOTER -->
+  <footer>
+    <img class="foot-logo" src="../assets/images/logo.png" alt="FoodConnect logo" width="56" height="63">
+    <p><b>FoodConnect</b> is a non-profit food redistribution platform.</p>
+    <p>Reduce food waste. Increase social impact. Connect surplus food with those who need it most.</p>
+  </footer>
+
+
+  <!-- WELCOME POPUP: shown when the site opens (if not logged in). "Maybe later" closes it. -->
+  <div class="modal" id="welcome" role="dialog" aria-modal="true" aria-labelledby="wTitle" hidden>
+    <div class="modal-box">
+      <button class="modal-x" type="button" aria-label="Close" onclick="closeWelcome()">&times;</button>
+      <img class="modal-logo" src="../assets/images/logo.png" alt="FoodConnect logo" width="72" height="80">
+      <h2 id="wTitle">Welcome to FoodConnect</h2>
+      <p class="wsub">Log in to donate or request food.</p>
+      <div class="msg" id="wMsg" role="alert"></div>
+      <form id="wForm">
+        <div class="roles">
+          <label class="ro"><input type="radio" name="wrole" value="donor" checked><span>🍲<b>Donor</b></span></label>
+          <label class="ro"><input type="radio" name="wrole"
+              value="recipient"><span>🏛️<b>Organisation</b></span></label>
+          <label class="ro"><input type="radio" name="wrole" value="admin"><span>🛡️<b>Admin</b></span></label>
+        </div>
+        <label>Email<input type="email" id="wEmail" autocomplete="username" required></label>
+        <label>Password<input type="password" id="wPass" autocomplete="current-password" required></label>
+        <button class="btn dk">Log in</button>
+      </form>
+      <p class="wlinks">New here? <a href="#register" onclick="closeWelcome()">Create an account</a></p>
+      <button type="button" class="later" onclick="closeWelcome()">Maybe later</button>
+    </div>
+  </div>
+
+  <!-- Script: navigation, login, dashboards and data handling live in script.js -->
+  <script src="../scripts/script.js"></script>
+</body>
+
+</html>
