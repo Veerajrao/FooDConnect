@@ -1,7 +1,7 @@
 
 /*
  * FoodConnect - Navigation
- * Handles page navigation and mobile menu interactions.
+ * Handles navigation, login state and mobile menu.
  */
 
 const navigationPages = [
@@ -10,9 +10,9 @@ const navigationPages = [
   { label: 'Food safety guide', page: 'guide' },
   { label: 'Hall of Fame', page: 'fame' },
   { label: 'Available food', page: 'listings' },
-  { label: 'Log in', page: 'login' },
-  { label: 'Register', page: 'register' },
-  { label: 'Dashboard', page: 'dashboard' }
+  { label: 'Log in', page: 'login', guestOnly: true },
+  { label: 'Register', page: 'register', guestOnly: true },
+  { label: 'Dashboard', page: 'dashboard', loggedInOnly: true }
 ];
 
 function go(page) {
@@ -20,17 +20,31 @@ function go(page) {
 
   if (!allowedPages.includes(page)) return;
 
-  // Pages are stored inside frontend/pages/.
-  window.location.href = `pages/${page}.html`;
+  window.location.href = `${page}.html`;
 }
 
-function renderNavigation() {
+async function renderNavigation() {
   const nav = $('#nav');
   if (!nav) return;
 
+  let loggedIn = false;
+
+  try {
+    const result = await apiRequest('current-user.php');
+    loggedIn = Boolean(result.user);
+  } catch (error) {
+    loggedIn = false;
+  }
+
   const currentPage = document.body.dataset.page;
 
-  nav.innerHTML = navigationPages.map((item) => {
+  const links = navigationPages.filter((item) => {
+    if (item.guestOnly && loggedIn) return false;
+    if (item.loggedInOnly && !loggedIn) return false;
+    return true;
+  });
+
+  nav.innerHTML = links.map((item) => {
     const active = item.page === currentPage;
 
     return `
@@ -40,6 +54,33 @@ function renderNavigation() {
       </a>
     `;
   }).join('');
+
+  if (loggedIn) {
+    const logoutLink = document.createElement('a');
+    logoutLink.href = '#';
+    logoutLink.textContent = 'Log out';
+
+    logoutLink.addEventListener('click', async (event) => {
+      event.preventDefault();
+      logoutLink.textContent = 'Logging out...';
+      logoutLink.style.pointerEvents = 'none';
+
+      try {
+        await apiRequest('logout.php', {
+          method: 'POST',
+          body: JSON.stringify({})
+        });
+
+        window.location.href = 'home.html';
+      } catch (error) {
+        logoutLink.textContent = 'Log out';
+        logoutLink.style.pointerEvents = '';
+        alert(error.message || 'Logout failed. Please try again.');
+      }
+    });
+
+    nav.appendChild(logoutLink);
+  }
 }
 
 function toggleMenu(forceState) {

@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 
@@ -6,6 +5,7 @@ header('Content-Type: application/json; charset=utf-8');
 
 require_once __DIR__ . '/../db.php';
 
+// Allow only POST requests.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     header('Allow: POST');
@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+// Read JSON request data.
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!is_array($data)) {
@@ -29,10 +30,17 @@ if (!is_array($data)) {
     exit;
 }
 
+// Read and normalize login details.
 $email = strtolower(trim($data['email'] ?? ''));
 $password = $data['password'] ?? '';
-$role = $data['role'] ?? '';
+$role = strtolower(trim($data['role'] ?? ''));
 
+// Normalize organisation role values.
+if (in_array($role, ['recipient', 'organization'], true)) {
+    $role = 'organisation';
+}
+
+// Validate required fields.
 if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $password === '') {
     http_response_code(422);
 
@@ -44,6 +52,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $password === '') {
 }
 
 try {
+    // Find the account by email.
     $stmt = $pdo->prepare(
         'SELECT id, name, email, password_hash, role
          FROM users
@@ -54,6 +63,7 @@ try {
     $stmt->execute(['email' => $email]);
     $user = $stmt->fetch();
 
+    // Verify the password, account role and selected account type.
     if (
         !$user ||
         !password_verify($password, $user['password_hash']) ||
@@ -69,6 +79,7 @@ try {
         exit;
     }
 
+    // Create a fresh session after successful authentication.
     session_regenerate_id(true);
 
     $_SESSION['user_id'] = (int) $user['id'];
@@ -93,3 +104,4 @@ try {
         'message' => 'Unable to log in right now.'
     ]);
 }
+
