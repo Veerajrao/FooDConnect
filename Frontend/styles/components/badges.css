@@ -1,0 +1,110 @@
+
+/* ==========================================================
+   BADGES CSS
+   Donor achievements, status labels and category badges
+   ========================================================== */
+
+/* Base badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+  background: #edf2ee;
+  color: var(--g);
+}
+
+/* Bronze achievement */
+.badge.bronze,
+.t-Bronze .badge {
+  background: #f4e1d0;
+  color: #77451f;
+}
+
+/* Silver achievement */
+.badge.silver,
+.t-Silver .badge {
+  background: #e6eaed;
+  color: #45515b;
+}
+
+/* Gold achievement */
+.badge.gold,
+.t-Gold .badge {
+  background: #fff0bd;
+  color: #775400;
+}
+
+/* Platinum achievement */
+.badge.platinum,
+.t-Platinum .badge {
+  background: #dce9ff;
+  color: #244c88;
+}
+
+/* Pending status */
+.badge.pending {
+  background: #fff0bd;
+  color: #775400;
+}
+
+/* Approved or completed status */
+.badge.approved,
+.badge.completed,
+.badge.success {
+  background: #dcefe4;
+  color: #185c3d;
+}
+
+/* Rejected or cancelled status */
+.badge.rejected,
+.badge.cancelled,
+.badge.danger {
+  background: #fbe2df;
+  color: #922d23;
+}
+
+/* Informational status */
+.badge.info {
+  background: #e0edfb;
+  color: #234e82;
+}
+
+/* Small badge variation */
+.badge.sm {
+  padding: 3px 8px;
+  font-size: 0.75rem;
+}
+
+/* Large badge variation */
+.badge.lg {
+  padding: 8px 16px;
+  font-size: 0.95rem;
+}
+
+/* Honour tier labels */
+.tier {
+  --c: var(--g2);
+}
+
+.t-Bronze {
+  --c: #b0713a;
+}
+
+.t-Silver {
+  --c: #7d8a96;
+}
+
+.t-Gold {
+  --c: #d49a0d;
+}
+
+.t-Platinum {
+  --c: #3f6fb5;
+}

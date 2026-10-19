@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Who can take part – FoodConnect</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Source+Sans+3:wght@400;600&display=swap"
+    rel="stylesheet">
+
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+  <!-- Shared stylesheets -->
+  <link rel="stylesheet" href="../styles/common/global.css">
+  <link rel="stylesheet" href="../styles/common/layout.css">
+  <link rel="stylesheet" href="../styles/components/cards.css">
+  <link rel="stylesheet" href="../styles/components/forms.css">
+  <link rel="stylesheet" href="../styles/components/welcome-modal.css">
+  <link rel="stylesheet" href="../styles/common/responsive.css">
+</head>
+
+<body data-page="domains">
+
+  <!-- Header and navigation -->
+  <header>
+    <div class="logo"
+         onclick="go('home')"
+         onkeydown="if(event.key==='Enter')go('home')"
+         tabindex="0"
+         role="link">
+      <img class="logo-img"
+           src="../assets/images/logo.png"
+           alt=""
+           width="40"
+           height="45">
+      <span class="logo-txt">Food<span>Connect</span></span>
+    </div>
+
+    <button class="burger"
+            id="burger"
+            aria-label="Open menu"
+            aria-expanded="false"
+            aria-controls="nav"
+            onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav id="nav"></nav>
+  </header>
+
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
+
+  <main>
+    <section id="domains">
+      <div class="wrap">
+
+        <h2>Who can take part</h2>
+        <p class="lead">
+          FoodConnect has three kinds of accounts, each with its own login and tools.
+        </p>
+
+        <h3 style="margin-bottom:12px">Food providers (donors)</h3>
+
+        <div class="grid" style="margin-bottom:34px">
+
+          <div class="card">
+            <span class="ico">🎉</span>
+            <h3>Individuals</h3>
+            <p>Birthdays, weddings, festivals and family functions with food to spare.</p>
+          </div>
+
+          <div class="card">
+            <span class="ico">🏨</span>
+            <h3>Hotels</h3>
+            <p>Buffet and banquet surplus at the end of service.</p>
+          </div>
+
+          <div class="card">
+            <span class="ico">🍽️</span>
+            <h3>Restaurants</h3>
+            <p>Unsold, safe, freshly cooked meals.</p>
+          </div>
+
+          <div class="card">
+            <span class="ico">🥘</span>
+            <h3>Caterers</h3>
+            <p>Extra food from large orders and events.</p>
+          </div>
+
+          <div class="card">
+            <span class="ico">📋</span>
+            <h3>Event organisers</h3>
+            <p>Conferences, fairs and community events.</p>
+          </div>
+
+        </div>
+
+        <h3 style="margin-bottom:12px">Food receivers (recipient organisations)</h3>
+
+        <div class="grid" style="margin-bottom:34px">
+
+          <div class="card">
+            <span class="ico">🏛️</span>
+            <h3>NGOs and charities</h3>
+            <p>Community kitchens and charitable trusts.</p>
+          </div>
+
+          <div class="card">
+            <span class="ico">🧒</span>
+            <h3>Orphanages</h3>
+            <p>Meals for children in care.</p>
+          </div>
+
+          <div class="card">
+            <span class="ico">👵</span>
+            <h3>Old-age homes</h3>
+            <p>Fresh food for elders.</p>
+          </div>
+
+          <div class="card">
+            <span class="ico">🛕</span>
+            <h3>Ashramas and shelters</h3>
+            <p>Help for people without a meal.</p>
+          </div>
+
+        </div>
+
+        <h3 style="margin-bottom:12px">Administrators</h3>
+
+        <div class="card">
+          <p>
+            Admins verify organisations, keep listings safe and fair,
+            and watch overall impact from the dashboard.
+          </p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <img class="foot-logo"
+         src="../assets/images/logo.png"
+         alt="FoodConnect logo"
+         width="56"
+         height="63">
+
+    <p><b>FoodConnect</b> is a non-profit food redistribution platform.</p>
+    <p>
+      Reduce food waste. Increase social impact.
+      Connect surplus food with those who need it most.
+    </p>
+  </footer>
+
+  <!-- Welcome login popup -->
+  <div class="modal"
+       id="welcome"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="wTitle"
+       hidden>
+
+    <div class="modal-box">
+      <button class="modal-x"
+              type="button"
+              aria-label="Close"
+              onclick="closeWelcome()">
+        &times;
+      </button>
+
+      <img class="modal-logo"
+           src="../assets/images/logo.png"
+           alt="FoodConnect logo"
+           width="72"
+           height="80">
+
+      <h2 id="wTitle">Welcome to FoodConnect</h2>
+      <p class="wsub">Log in to donate or request food.</p>
+
+      <div class="msg" id="wMsg" role="alert"></div>
+
+      <form id="wForm">
+        <div class="roles">
+
+          <label class="ro">
+            <input type="radio" name="wrole" value="donor" checked>
+            <span>🍲<b>Donor</b></span>
+          </label>
+
+          <label class="ro">
+            <input type="radio" name="wrole" value="recipient">
+            <span>🏛️<b>Organisation</b></span>
+          </label>
+
+          <label class="ro">
+            <input type="radio" name="wrole" value="admin">
+            <span>🛡️<b>Admin</b></span>
+          </label>
+
+        </div>
+
+        <label>
+          Email
+          <input type="email" id="wEmail" autocomplete="username" required>
+        </label>
+
+        <label>
+          Password
+          <input type="password" id="wPass" autocomplete="current-password" required>
+        </label>
+
+        <button class="btn dk">Log in</button>
+      </form>
+
+      <p class="wlinks">
+        New here? <a href="register.html" onclick="closeWelcome()">Create an account</a>
+      </p>
+
+      <button type="button" class="later" onclick="closeWelcome()">Maybe later</button>
+    </div>
+  </div>
+
+  <!-- Shared scripts -->
+  <script src="../scripts/common/helpers.js"></script>
+  <script src="../scripts/common/data.js"></script>
+  <script src="../scripts/common/navigation.js"></script>
+  <script src="../scripts/common/welcome.js"></script>
+
+</body>
+</html>

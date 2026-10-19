@@ -1,0 +1,147 @@
+
+/* ==========================================================
+   DASHBOARD CSS
+   Dashboard layout, summary cards, actions and data sections
+   ========================================================== */
+
+/* Dashboard main section */
+#dash {
+  padding: 20px 0 50px;
+}
+
+/* Dashboard heading */
+#dash h1,
+#dash h2 {
+  color: var(--g);
+  margin-bottom: 14px;
+}
+
+/* Dashboard introductory text */
+#dash .lead {
+  margin-bottom: 28px;
+}
+
+/* Dashboard summary grid */
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0 32px;
+}
+
+/* Individual statistic */
+.dash-stat {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.dash-stat span {
+  display: block;
+  color: var(--mut);
+  font-size: 0.95rem;
+}
+
+.dash-stat strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--g);
+  font: 800 1.8rem 'Bricolage Grotesque', sans-serif;
+}
+
+/* Dashboard content panels */
+.dash-panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.dash-panel h3 {
+  color: var(--g);
+  margin-bottom: 14px;
+}
+
+/* Dashboard action buttons */
+.dash-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+/* Dashboard lists */
+.dash-list {
+  display: grid;
+  gap: 12px;
+}
+
+.dash-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.dash-list-item:last-child {
+  border-bottom: 0;
+}
+
+/* Dashboard tables */
+#dash table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+#dash th,
+#dash td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+#dash th {
+  background: #edf3ee;
+  color: var(--g);
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .dash-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dash-panel {
+    padding: 20px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .dash-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-stat {
+    padding: 16px;
+  }
+
+  .dash-panel {
+    padding: 16px;
+    overflow-wrap: anywhere;
+  }
+
+  .dash-list-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  #dash table {
+    min-width: 520px;
+  }
+}

@@ -1,0 +1,196 @@
+
+/* ==========================================================
+   FORMS CSS
+   Login, registration, inputs, labels and form messages
+   ========================================================== */
+
+/* Form layout */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Labels */
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Text inputs, dropdowns and text areas */
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #cbd5ce;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+}
+
+/* Text area */
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Focus state */
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--g2);
+  outline: 2px solid rgb(31 106 84 / 15%);
+}
+
+/* Disabled controls */
+input:disabled,
+select:disabled,
+textarea:disabled,
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Checkbox and radio controls */
+input[type="checkbox"],
+input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--g);
+  flex-shrink: 0;
+}
+
+/* Checkbox label */
+.chk {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+/* Fieldset */
+fieldset {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+legend {
+  padding: 0 6px;
+  font-weight: 700;
+  color: var(--g);
+}
+
+/* Two-column form fields */
+.two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* Role selection */
+.roles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ro {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.ro:has(input:checked) {
+  border-color: var(--g2);
+  background: #edf5ef;
+}
+
+.ro span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ro small {
+  color: var(--mut);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+/* Form status and feedback messages */
+.msg {
+  display: none;
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+.msg:not(:empty) {
+  display: block;
+  background: #edf5ef;
+  color: var(--g);
+}
+
+.msg.error {
+  background: #fbe2df;
+  color: #922d23;
+}
+
+.msg.success {
+  background: #dcefe4;
+  color: #185c3d;
+}
+
+/* Small hints */
+.hint {
+  padding: 12px;
+  border-radius: 8px;
+  background: #f0f3ef;
+  color: var(--mut);
+  font-size: 0.92rem;
+}
+
+.hint a {
+  color: var(--g);
+}
+
+/* Demo account buttons */
+.demo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Mobile form layout */
+@media (max-width: 600px) {
+  .two,
+  .roles {
+    grid-template-columns: 1fr;
+  }
+
+  fieldset {
+    padding: 12px;
+  }
+
+  .ro {
+    padding: 10px;
+  }
+}

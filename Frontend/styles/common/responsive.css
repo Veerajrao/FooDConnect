@@ -1,0 +1,149 @@
+
+/* ==========================================================
+   RESPONSIVE CSS
+   Additional responsive rules for FoodConnect pages
+   ========================================================== */
+
+/* Prevent oversized content from breaking layouts */
+img,
+video,
+iframe {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+/* Tablet screens */
+@media (max-width: 900px) {
+  .wrap {
+    padding: 44px 5%;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .lead {
+    max-width: 100%;
+  }
+
+  .authgrid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .authside,
+  .authcard {
+    min-width: 0;
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 600px) {
+  body {
+    font-size: 16px;
+  }
+
+  .wrap {
+    padding: 32px 5%;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    font-size: 1.15rem;
+  }
+
+  .logo-txt {
+    font-size: 1.25rem;
+  }
+
+  .logo-img {
+    width: 34px;
+    height: 38px;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 11px 16px;
+  }
+
+  .btn.alt {
+    margin-left: 0;
+  }
+
+  /* Stack hero buttons when needed */
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Prevent tables from forcing the page wider */
+  .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 520px;
+    border-collapse: collapse;
+  }
+
+  /* Keep long words and URLs inside cards */
+  .card,
+  .authcard,
+  .authside {
+    overflow-wrap: anywhere;
+  }
+
+  /* Form buttons fit smaller screens */
+  form > .btn {
+    width: 100%;
+  }
+
+  /* Footer spacing */
+  footer {
+    font-size: 0.95rem;
+  }
+}
+
+/* Very small mobile screens */
+@media (max-width: 360px) {
+  .wrap {
+    padding: 26px 4%;
+  }
+
+  .logo-txt {
+    font-size: 1.1rem;
+  }
+
+  .burger {
+    width: 38px;
+    height: 38px;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Landscape phones with limited vertical space */
+@media (max-height: 500px) and (max-width: 900px) {
+  .modal {
+    align-items: flex-start;
+  }
+
+  .modal-box {
+    max-height: calc(100vh - 24px);
+  }
+}

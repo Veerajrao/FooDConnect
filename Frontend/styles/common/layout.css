@@ -1,0 +1,180 @@
+
+/* ==========================================================
+   LAYOUT CSS
+   Header, navigation, backdrop, footer and common page layout
+   ========================================================== */
+
+/* Header */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px 5%;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.logo-img {
+  display: block;
+  width: 40px;
+  height: 45px;
+  object-fit: contain;
+}
+
+.logo-txt {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--g);
+}
+
+.logo-txt span {
+  color: var(--tom);
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+}
+
+nav a {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: .95rem;
+  transition: color .2s ease;
+}
+
+nav a:hover,
+nav a:focus-visible {
+  color: var(--g2);
+}
+
+/* Mobile menu button */
+.burger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.burger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--g);
+  border-radius: 2px;
+}
+
+/* Mobile navigation backdrop */
+.backdrop {
+  display: none;
+}
+
+/* Footer */
+footer {
+  padding: 36px 5%;
+  text-align: center;
+  background: var(--g);
+  color: #fff;
+}
+
+.foot-logo {
+  display: block;
+  width: 56px;
+  height: 63px;
+  object-fit: contain;
+  margin: 0 auto 12px;
+}
+
+footer p {
+  max-width: 650px;
+  margin: 8px auto;
+  color: #e4eee9;
+}
+
+footer b {
+  color: #fff;
+}
+
+/* Responsive navigation */
+@media (max-width: 800px) {
+  header {
+    padding: 10px 5%;
+  }
+
+  .burger {
+    display: flex;
+  }
+
+  nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 101;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 12px 5% 20px;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 12px 20px rgb(0 0 0 / 8%);
+  }
+
+  nav.open {
+    display: flex;
+  }
+
+  nav a {
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .backdrop.show {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgb(0 0 0 / 35%);
+  }
+
+  footer {
+    padding: 30px 6%;
+  }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}

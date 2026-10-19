@@ -1,0 +1,128 @@
+
+/* ==========================================================
+   LOGIN AND REGISTER PAGES (login.html, register.html) - shared layout:
+   green info panel + form card, switch tab, two-column rows, demo buttons.
+   ========================================================== */
+
+/* LOGIN / REGISTER PAGE: two-column layout (green info panel + form card) */
+.authgrid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #fff;
+  max-width: 980px;
+  margin: auto;
+}
+
+.authside {
+  background: var(--g);
+  color: #fff;
+  padding: 40px 34px;
+}
+
+.authside h2 {
+  font-size: 1.9rem;
+}
+
+.authside p {
+  color: #cfe3da;
+  margin: 12px 0 22px;
+}
+
+.authside ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  font-size: .98rem;
+}
+
+.authside li {
+  padding-left: 2px;
+  border-left: 4px solid var(--sun);
+  padding-left: 12px;
+}
+
+.authcard {
+  padding: 30px 34px;
+}
+
+/* Log in / Register switch tab */
+.sw {
+  background: #eaf0ec;
+  border-radius: 99px;
+  padding: 5px;
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+}
+
+.sw button {
+  flex: 1;
+  border: 0;
+  background: none;
+  border-radius: 99px;
+  padding: 10px;
+  font: 700 1rem 'Source Sans 3', sans-serif;
+  cursor: pointer;
+  color: var(--mut);
+}
+
+.sw button.on {
+  background: var(--g);
+  color: #fff;
+}
+
+/* Two-column rows inside forms, demo buttons and checkbox row */
+.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.demo {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.chk {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-weight: 400;
+}
+
+.chk input {
+  width: auto;
+  margin-top: 5px;
+}
+
+/* Responsive layout */
+@media (max-width: 800px) {
+  .authgrid {
+    grid-template-columns: 1fr;
+  }
+
+  .authside {
+    padding: 30px 24px;
+  }
+
+  .authcard {
+    padding: 26px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .authside,
+  .authcard {
+    padding: 22px 18px;
+  }
+
+  .two {
+    grid-template-columns: 1fr;
+  }
+}
