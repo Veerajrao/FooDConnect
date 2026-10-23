@@ -1,10 +1,9 @@
 
 /* ==========================================================
-   LAYOUT CSS
-   Header, navigation, backdrop, footer and common page layout
+   FOODCONNECT LAYOUT
+   Header, navigation, profile icon, mobile menu and footer
    ========================================================== */
 
-/* Header */
 header {
   position: sticky;
   top: 0;
@@ -14,8 +13,10 @@ header {
   justify-content: space-between;
   gap: 20px;
   padding: 12px 5%;
-  background: #fff;
-  border-bottom: 1px solid var(--line);
+  background: #174C3E;
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  box-sizing: border-box;
 }
 
 /* Logo */
@@ -32,40 +33,96 @@ header {
   width: 40px;
   height: 45px;
   object-fit: contain;
+  flex-shrink: 0;
 }
 
 .logo-txt {
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 1.5rem;
+  line-height: 1.1;
   font-weight: 800;
-  color: var(--g);
+  color: #FFFFFF;
+  white-space: nowrap;
 }
 
 .logo-txt span {
-  color: var(--tom);
+  color: #FFB938;
 }
 
-/* Navigation */
-nav {
+/* Desktop navigation */
+header nav {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 18px;
+  min-width: 0;
 }
 
-nav a {
-  color: var(--ink);
+header nav a {
+  color: #FFFFFF;
   text-decoration: none;
   font-weight: 600;
-  font-size: .95rem;
-  transition: color .2s ease;
+  font-size: 0.95rem;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
-nav a:hover,
-nav a:focus-visible {
-  color: var(--g2);
+header nav a:hover,
+header nav a:focus-visible {
+  color: #FFB938;
 }
 
-/* Mobile menu button */
+header nav a[aria-current="page"] {
+  color: #FFB938;
+}
+
+/* Profile icon outside the hamburger */
+.profile-icon-link {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  color: #174C3E;
+  background: #FFFFFF;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.profile-icon-link:hover {
+  background: #FFB938;
+  color: #174C3E;
+  transform: translateY(-1px);
+}
+
+/* Logout button */
+.logout-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 18px;
+  border: none;
+  border-radius: 9px;
+  background: #21845D;
+  color: #FFFFFF;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #176B4A;
+}
+
+.logout-btn:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+/* Hamburger button */
 .burger {
   display: none;
   align-items: center;
@@ -74,10 +131,11 @@ nav a:focus-visible {
   gap: 5px;
   width: 42px;
   height: 42px;
+  flex: 0 0 42px;
   padding: 8px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 8px;
-  background: #fff;
+  background: transparent;
   cursor: pointer;
 }
 
@@ -85,11 +143,11 @@ nav a:focus-visible {
   display: block;
   width: 22px;
   height: 2px;
-  background: var(--g);
+  background: #FFFFFF;
   border-radius: 2px;
 }
 
-/* Mobile navigation backdrop */
+/* Backdrop */
 .backdrop {
   display: none;
 }
@@ -98,8 +156,8 @@ nav a:focus-visible {
 footer {
   padding: 36px 5%;
   text-align: center;
-  background: var(--g);
-  color: #fff;
+  background: #174C3E;
+  color: #FFFFFF;
 }
 
 .foot-logo {
@@ -113,24 +171,44 @@ footer {
 footer p {
   max-width: 650px;
   margin: 8px auto;
-  color: #e4eee9;
+  color: #E4EEE9;
 }
 
 footer b {
-  color: #fff;
+  color: #FFFFFF;
 }
 
-/* Responsive navigation */
+/* Tablet and mobile navigation */
 @media (max-width: 800px) {
   header {
-    padding: 10px 5%;
+    gap: 10px;
+    padding: 10px 16px;
+  }
+
+  .logo {
+    min-width: 0;
+    gap: 7px;
+  }
+
+  .logo-img {
+    width: 34px;
+    height: 38px;
+  }
+
+  .logo-txt {
+    font-size: clamp(1.05rem, 4.2vw, 1.35rem);
+  }
+
+  /* Keep profile and hamburger visible on the right */
+  .profile-icon-link {
+    margin-left: auto;
   }
 
   .burger {
     display: flex;
   }
 
-  nav {
+  header nav {
     display: none;
     position: absolute;
     top: 100%;
@@ -140,19 +218,37 @@ footer b {
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    padding: 12px 5% 20px;
-    background: #fff;
-    border-bottom: 1px solid var(--line);
-    box-shadow: 0 12px 20px rgb(0 0 0 / 8%);
+    max-height: calc(100vh - 75px);
+    overflow-y: auto;
+    padding: 12px 18px 20px;
+    background: #174C3E;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 20px rgb(0 0 0 / 18%);
   }
 
-  nav.open {
+  header nav.open {
     display: flex;
   }
 
-  nav a {
-    padding: 12px 8px;
-    border-bottom: 1px solid var(--line);
+  header nav a {
+    display: block;
+    padding: 13px 8px;
+    color: #FFFFFF;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  header nav a:hover,
+  header nav a:focus-visible {
+    color: #FFB938;
+  }
+
+  header nav .logout-btn {
+    width: 100%;
+    margin-top: 14px;
+    padding: 13px 16px;
+    background: #21845D;
+    color: #FFFFFF;
   }
 
   .backdrop.show {
@@ -168,13 +264,74 @@ footer b {
   }
 }
 
-/* Reduced motion accessibility */
+/* Small mobile screens */
+@media (max-width: 380px) {
+  header {
+    gap: 7px;
+    padding-inline: 10px;
+  }
+
+  .logo {
+    gap: 5px;
+  }
+
+  .logo-img {
+    width: 30px;
+    height: 34px;
+  }
+
+  .logo-txt {
+    font-size: 1rem;
+  }
+
+  .profile-icon-link,
+  .burger {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+  }
+}
+
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    scroll-behavior: auto !important;
-    animation-duration: .01ms !important;
-    transition-duration: .01ms !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }
+
+/* Desktop navbar alignment fix */
+@media (min-width: 801px) {
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 24px;
+  }
+
+  header .logo {
+    margin-right: auto;
+    flex-shrink: 0;
+  }
+
+  header #nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 1 auto;
+    gap: 18px;
+  }
+
+  header .profile-icon-link {
+    order: 2;
+    margin-left: 0;
+    flex-shrink: 0;
+  }
+
+  header #burger {
+    display: none;
+  }
+}
+

@@ -1,7 +1,7 @@
 
 /*
  * FoodConnect - Navigation
- * Handles navigation, login state and mobile menu.
+ * Handles navigation, login state, profile icon and mobile menu.
  */
 
 const navigationPages = [
@@ -12,7 +12,11 @@ const navigationPages = [
   { label: 'Available food', page: 'listings' },
   { label: 'Log in', page: 'login', guestOnly: true },
   { label: 'Register', page: 'register', guestOnly: true },
-  { label: 'Dashboard', page: 'dashboard', loggedInOnly: true }
+  {
+    label: '',
+    page: 'dashboard',
+    loggedInOnly: true
+  }
 ];
 
 function go(page) {
@@ -24,20 +28,24 @@ function go(page) {
 }
 
 async function renderNavigation() {
-  const nav = $('#nav');
-  if (!nav) return;
+  const nav = document.querySelector('#nav');
+  const header = document.querySelector('header');
 
-  let loggedIn = false;
+  if (!nav || !header) return;
+
+  let user = null;
 
   try {
     const result = await apiRequest('current-user.php');
-    loggedIn = Boolean(result.user);
+    user = result.user || null;
   } catch (error) {
-    loggedIn = false;
+    user = null;
   }
 
+  const loggedIn = Boolean(user);
   const currentPage = document.body.dataset.page;
 
+  // Build the navigation links.
   const links = navigationPages.filter((item) => {
     if (item.guestOnly && loggedIn) return false;
     if (item.loggedInOnly && !loggedIn) return false;
@@ -49,21 +57,62 @@ async function renderNavigation() {
 
     return `
       <a href="${item.page}.html"
+         class="${item.page === 'dashboard' ? 'profile-menu-link' : ''}"
          ${active ? 'aria-current="page"' : ''}>
         ${item.label}
       </a>
     `;
   }).join('');
 
-  if (loggedIn) {
-    const logoutLink = document.createElement('a');
-    logoutLink.href = '#';
-    logoutLink.textContent = 'Log out';
+  // Remove any old profile icon before recreating it.
+  const oldProfile = header.querySelector('.profile-icon-link');
+  if (oldProfile) oldProfile.remove();
 
-    logoutLink.addEventListener('click', async (event) => {
-      event.preventDefault();
-      logoutLink.textContent = 'Logging out...';
-      logoutLink.style.pointerEvents = 'none';
+  // Show the profile icon only when logged in.
+  if (loggedIn) {
+    const profileLink = document.createElement('a');
+
+    profileLink.href = 'dashboard.html';
+    profileLink.className = 'profile-icon-link';
+    profileLink.setAttribute('aria-label', 'Open profile');
+    profileLink.setAttribute('title', 'Profile');
+
+    profileLink.innerHTML = `
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true">
+        <circle cx="12" cy="8" r="4"></circle>
+        <path d="M5 21v-2a7 7 0 0 1 14 0v2"></path>
+      </svg>
+    `;
+
+    // Place the icon in the header, outside the hamburger menu.
+    const burger = header.querySelector('#burger');
+
+    if (burger) {
+      header.insertBefore(profileLink, burger);
+    } else {
+      header.appendChild(profileLink);
+    }
+
+    // Add a functional logout button inside the menu.
+    const logoutButton = document.createElement('button');
+
+    logoutButton.type = 'button';
+    logoutButton.className = 'logout-btn';
+    logoutButton.textContent = 'Logout';
+
+    logoutButton.addEventListener('click', async () => {
+      logoutButton.disabled = true;
+      logoutButton.textContent = 'Logging out...';
 
       try {
         await apiRequest('logout.php', {
@@ -73,20 +122,28 @@ async function renderNavigation() {
 
         window.location.href = 'home.html';
       } catch (error) {
-        logoutLink.textContent = 'Log out';
-        logoutLink.style.pointerEvents = '';
+        logoutButton.disabled = false;
+        logoutButton.textContent = 'Logout';
+
         alert(error.message || 'Logout failed. Please try again.');
       }
     });
 
-    nav.appendChild(logoutLink);
+    nav.appendChild(logoutButton);
   }
+
+  // Close the mobile menu after choosing a navigation link.
+  nav.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      toggleMenu(false);
+    });
+  });
 }
 
 function toggleMenu(forceState) {
-  const nav = $('#nav');
-  const backdrop = $('#backdrop');
-  const burger = $('#burger');
+  const nav = document.querySelector('#nav');
+  const backdrop = document.querySelector('#backdrop');
+  const burger = document.querySelector('#burger');
 
   if (!nav) return;
 
