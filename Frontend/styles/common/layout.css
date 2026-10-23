@@ -4,6 +4,12 @@
    Header, navigation, profile icon, mobile menu and footer
    ========================================================== */
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 header {
   position: sticky;
   top: 0;
@@ -16,7 +22,6 @@ header {
   background: #174C3E;
   color: #FFFFFF;
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  box-sizing: border-box;
 }
 
 /* Logo */
@@ -75,7 +80,7 @@ header nav a[aria-current="page"] {
   color: #FFB938;
 }
 
-/* Profile icon outside the hamburger */
+/* Profile icon */
 .profile-icon-link {
   width: 42px;
   height: 42px;
@@ -154,7 +159,7 @@ header nav a[aria-current="page"] {
 
 /* Footer */
 footer {
-  padding: 36px 5%;
+  padding: 20px 5%;
   text-align: center;
   background: #174C3E;
   color: #FFFFFF;
@@ -162,20 +167,54 @@ footer {
 
 .foot-logo {
   display: block;
-  width: 56px;
-  height: 63px;
+  width: 40px;
+  height: 45px;
   object-fit: contain;
-  margin: 0 auto 12px;
+  margin: 0 auto 6px;
 }
 
 footer p {
-  max-width: 650px;
-  margin: 8px auto;
+  max-width: 560px;
+  margin: 4px auto;
   color: #E4EEE9;
+  font-size: 0.92rem;
+  line-height: 1.45;
 }
 
 footer b {
   color: #FFFFFF;
+}
+
+/* Desktop alignment: logo, links + Logout, profile icon */
+@media (min-width: 801px) {
+  header {
+    justify-content: flex-start;
+    gap: 24px;
+  }
+
+  header .logo {
+    margin-right: auto;
+  }
+
+  header #nav {
+    order: 2;
+    flex: 0 1 auto;
+  }
+
+  header .profile-icon-link {
+    order: 3;
+    margin-left: 0;
+    flex-shrink: 0;
+  }
+
+  header #burger {
+    display: none;
+  }
+
+  /* Hide the duplicate Profile text on desktop only */
+  header nav .profile-menu-link {
+    display: none;
+  }
 }
 
 /* Tablet and mobile navigation */
@@ -199,7 +238,6 @@ footer b {
     font-size: clamp(1.05rem, 4.2vw, 1.35rem);
   }
 
-  /* Keep profile and hamburger visible on the right */
   .profile-icon-link {
     margin-left: auto;
   }
@@ -212,18 +250,19 @@ footer b {
     display: none;
     position: absolute;
     top: 100%;
-    left: 0;
-    right: 0;
+    left: auto;
+    right: 5%;
+    width: min(290px, 90vw);
+    max-height: calc(100vh - 75px);
+    overflow-y: auto;
     z-index: 101;
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    max-height: calc(100vh - 75px);
-    overflow-y: auto;
     padding: 12px 18px 20px;
     background: #174C3E;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 0 0 14px 14px;
     box-shadow: 0 12px 20px rgb(0 0 0 / 18%);
   }
 
@@ -233,7 +272,7 @@ footer b {
 
   header nav a {
     display: block;
-    padding: 13px 8px;
+    padding: 12px 8px;
     color: #FFFFFF;
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   }
@@ -241,6 +280,10 @@ footer b {
   header nav a:hover,
   header nav a:focus-visible {
     color: #FFB938;
+  }
+
+  header nav .profile-menu-link {
+    display: block;
   }
 
   header nav .logout-btn {
@@ -260,7 +303,18 @@ footer b {
   }
 
   footer {
-    padding: 30px 6%;
+    padding: 16px 6%;
+  }
+
+  .foot-logo {
+    width: 34px;
+    height: 38px;
+    margin-bottom: 4px;
+  }
+
+  footer p {
+    margin: 3px auto;
+    font-size: 0.86rem;
   }
 }
 
@@ -297,41 +351,8 @@ footer b {
   *,
   *::before,
   *::after {
+    scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
 }
-
-/* Desktop navbar alignment fix */
-@media (min-width: 801px) {
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 24px;
-  }
-
-  header .logo {
-    margin-right: auto;
-    flex-shrink: 0;
-  }
-
-  header #nav {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex: 0 1 auto;
-    gap: 18px;
-  }
-
-  header .profile-icon-link {
-    order: 2;
-    margin-left: 0;
-    flex-shrink: 0;
-  }
-
-  header #burger {
-    display: none;
-  }
-}
-

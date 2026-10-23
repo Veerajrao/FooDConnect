@@ -64,6 +64,23 @@
   margin-bottom: 14px;
 }
 
+.certificate-panel {
+  margin-top: 20px;
+  padding: 22px;
+  border: 1px solid #e2cf9b;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fffdf6, #f5f8f2);
+}
+
+.certificate-panel h2 {
+  margin-bottom: 8px;
+}
+
+.certificate-panel p {
+  margin-bottom: 14px;
+  color: var(--mut);
+}
+
 /* Dashboard action buttons */
 .dash-actions {
   display: flex;

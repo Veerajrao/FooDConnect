@@ -49,6 +49,27 @@
 
 /* Small-screen adjustments */
 @media (max-width: 480px) {
+  .fame-wrap {
+    gap: 0;
+  }
+
+  .fame-top-title {
+    margin-bottom: 10px !important;
+    color: var(--g);
+  }
+
+  #fameList {
+    width: 100%;
+  }
+
+  .fame-title {
+    margin-top: 6px;
+  }
+
+  .fame-tiers {
+    gap: 12px;
+  }
+
   .fr {
     gap: 10px;
     padding: 12px;

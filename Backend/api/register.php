@@ -36,13 +36,14 @@ $accountType = trim($data['account_type'] ?? '');
 $registrationNumber = trim($data['registration_number'] ?? '');
 
 if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)
-    || strlen($password) < 8
+    || strlen($password) < 6
+    || !preg_match('/^\d{10}$/', $phone)
     || !in_array($role, ['donor', 'organisation'], true)) {
     http_response_code(422);
 
     echo json_encode([
         'success' => false,
-        'message' => 'Enter valid details. Password must be at least 8 characters.'
+        'message' => 'Enter valid details. Use a 10-digit phone number and a password of at least 6 characters.'
     ]);
     exit;
 }

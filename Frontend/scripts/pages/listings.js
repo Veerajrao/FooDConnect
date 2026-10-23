@@ -1,31 +1,36 @@
-
 /*
  * FoodConnect - Available Food Listings
  * Loads food listings from the PHP backend.
  */
 
-const listingsGrid = $('#listGrid');
-const listingsMessage = $('#lmsg');
+const listingsGrid = $("#listGrid");
+const listingsMessage = $("#lmsg");
+let showRequestButtons = true;
 
 async function renderListings() {
   if (!listingsGrid) return;
 
+  try {
+    const session = await apiRequest("current-user.php");
+    showRequestButtons = session.user?.role !== "donor";
+  } catch (error) {
+    showRequestButtons = true;
+  }
+
   listingsGrid.replaceChildren();
 
   if (listingsMessage) {
-    listingsMessage.textContent = 'Loading available food...';
-    listingsMessage.style.display = 'block';
-    listingsMessage.className = 'msg';
+    listingsMessage.textContent = "Loading available food...";
+    listingsMessage.style.display = "block";
+    listingsMessage.className = "msg";
   }
 
   try {
     const result = await getFoodListings();
-    const listings = Array.isArray(result)
-      ? result
-      : result.listings || [];
+    const listings = Array.isArray(result) ? result : result.listings || [];
 
     if (listingsMessage) {
-      listingsMessage.style.display = 'none';
+      listingsMessage.style.display = "none";
     }
 
     if (listings.length === 0) {
@@ -34,18 +39,19 @@ async function renderListings() {
       return;
     }
 
-    listingsGrid.innerHTML = listings.map((food) => {
-      const id = Number(food.id);
-      const title = esc(food.title || food.food_name || 'Food listing');
-      const kind = esc(food.kind || food.category || 'Food');
-      const quantity = esc(food.qty ?? food.quantity ?? 'Not specified');
-      const address = esc(food.addr || food.location || 'Not specified');
-      const collectionTime = esc(
-        food.by || food.collect_before || 'Not specified'
-      );
-      const donorName = esc(food.donor_name || 'FoodConnect donor');
+    listingsGrid.innerHTML = listings
+      .map((food) => {
+        const id = Number(food.id);
+        const title = esc(food.title || food.food_name || "Food listing");
+        const kind = esc(food.kind || food.category || "Food");
+        const quantity = esc(food.qty ?? food.quantity ?? "Not specified");
+        const address = esc(food.addr || food.location || "Not specified");
+        const collectionTime = esc(
+          food.by || food.collect_before || "Not specified",
+        );
+        const donorName = esc(food.donor_name || "FoodConnect donor");
 
-      return `
+        return `
         <article class="card">
           <span class="tag">${kind}</span>
           <span class="tag amb">Serves ${quantity}</span>
@@ -53,31 +59,36 @@ async function renderListings() {
           <p>By <b>${donorName}</b></p>
           <p>📍 ${address}</p>
           <p>⏰ Collect before: ${collectionTime}</p>
-          <p style="margin-top:12px">
+          ${
+            showRequestButtons
+              ? `<p style="margin-top:12px">
             <button
               class="btn dk sm"
               type="button"
-              data-food-id="${Number.isSafeInteger(id) && id > 0 ? id : ''}"
-              ${Number.isSafeInteger(id) && id > 0 ? '' : 'disabled'}>
+              data-food-id="${Number.isSafeInteger(id) && id > 0 ? id : ""}"
+              ${Number.isSafeInteger(id) && id > 0 ? "" : "disabled"}>
               Request this food
             </button>
-          </p>
+          </p>`
+              : ""
+          }
         </article>
       `;
-    }).join('');
+      })
+      .join("");
   } catch (error) {
     if (listingsMessage) {
       listingsMessage.textContent =
-        error.message || 'Unable to load food listings. Please try again.';
-      listingsMessage.style.display = 'block';
-      listingsMessage.className = 'msg err';
+        error.message || "Unable to load food listings. Please try again.";
+      listingsMessage.style.display = "block";
+      listingsMessage.className = "msg err";
     }
   }
 }
 
 if (listingsGrid) {
-  listingsGrid.addEventListener('click', async (event) => {
-    const button = event.target.closest('[data-food-id]');
+  listingsGrid.addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-food-id]");
     if (!button || button.disabled) return;
 
     const foodId = Number(button.dataset.foodId);
@@ -87,22 +98,23 @@ if (listingsGrid) {
     button.disabled = true;
 
     try {
-      await apiRequest('requests.php', {
-        method: 'POST',
-        body: JSON.stringify({ food_id: foodId })
+      await apiRequest("requests.php", {
+        method: "POST",
+        body: JSON.stringify({ food_id: foodId }),
       });
 
       if (listingsMessage) {
-        listingsMessage.textContent = 'Food request submitted successfully.';
-        listingsMessage.style.display = 'block';
-        listingsMessage.className = 'msg';
+        listingsMessage.textContent = "Food request submitted successfully.";
+        listingsMessage.style.display = "block";
+        listingsMessage.className = "msg";
       }
     } catch (error) {
       if (listingsMessage) {
         listingsMessage.textContent =
-          error.message || 'Unable to submit your request. Please log in and try again.';
-        listingsMessage.style.display = 'block';
-        listingsMessage.className = 'msg err';
+          error.message ||
+          "Unable to submit your request. Please log in and try again.";
+        listingsMessage.style.display = "block";
+        listingsMessage.className = "msg err";
       }
     } finally {
       button.disabled = false;
@@ -110,4 +122,4 @@ if (listingsGrid) {
   });
 }
 
-document.addEventListener('DOMContentLoaded', renderListings);
+document.addEventListener("DOMContentLoaded", renderListings);

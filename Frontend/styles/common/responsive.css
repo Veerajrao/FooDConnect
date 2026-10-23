@@ -1,8 +1,8 @@
 
-/* =========================================
+/* ==========================================================
    FOODCONNECT RESPONSIVE LAYOUT
-   Layout only — colour correction later
-   ========================================= */
+   Responsive page layouts, forms and mobile adjustments
+   ========================================================== */
 
 /* Prevent horizontal overflow */
 html {
@@ -59,7 +59,7 @@ img {
   }
 }
 
-/* Mobile navbar and homepage */
+/* Mobile and tablet layouts */
 @media (max-width: 768px) {
   *,
   *::before,
@@ -67,16 +67,13 @@ img {
     box-sizing: border-box;
   }
 
+  /* Keep the navbar compact on mobile.
+     Colours and menu styling are controlled by layout.css. */
   header {
     width: 100%;
     min-height: 68px;
     padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     gap: 12px;
-    position: relative;
-    z-index: 100;
   }
 
   .logo {
@@ -100,13 +97,79 @@ img {
     white-space: nowrap;
   }
 
-  .burger {
-    width: 42px;
-    height: 42px;
-    flex: 0 0 42px;
+  /* Login and registration forms */
+  #login .wrap,
+  #register .wrap {
+    padding: 16px 6% 24px;
+  }
+
+  .authgrid {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    gap: 0;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 14px 36px rgb(20 50 35 / 14%);
+  }
+
+  .authside {
+    display: none !important;
+  }
+
+  .authcard {
+    padding: 17px 15px;
+  }
+
+  .authcard .sw {
+    margin-bottom: 14px;
+    padding: 4px;
+  }
+
+  .authcard form {
+    gap: 13px;
+  }
+
+  .authcard fieldset {
+    padding: 11px;
+  }
+
+  /* Hall of Fame ordering on mobile */
+  .fame-wrap {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+  }
+
+  .fame-top-title {
+    order: 1;
+  }
+
+  #fameList {
+    order: 2;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .fame-title {
+    order: 3;
+  }
+
+  .fame-intro {
+    order: 4;
+  }
+
+  .fame-tiers {
+    order: 5;
+    width: 100%;
+  }
+
+  /* Responsive headings */
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    font-size: 1.15rem;
   }
 
   /* Hero becomes a single column */
@@ -147,6 +210,7 @@ img {
     margin: 10px 0;
   }
 
+  /* Homepage feature panel */
   .plate {
     width: 100%;
     min-width: 0;
@@ -196,6 +260,7 @@ img {
     min-width: 0;
   }
 
+  /* Footer */
   footer {
     padding: 32px 18px;
     text-align: center;

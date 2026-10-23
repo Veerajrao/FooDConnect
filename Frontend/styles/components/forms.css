@@ -32,6 +32,7 @@ textarea {
   background: #fff;
   color: var(--ink);
   font: inherit;
+  transition: border-color .18s ease, box-shadow .18s ease;
 }
 
 /* Text area */
@@ -45,7 +46,56 @@ input:focus,
 select:focus,
 textarea:focus {
   border-color: var(--g2);
-  outline: 2px solid rgb(31 106 84 / 15%);
+  outline: none;
+  box-shadow: 0 0 0 5px rgb(31 106 84 / 24%);
+}
+
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+  border-color: #c43d32;
+  background: #fffafa;
+  box-shadow: 0 0 0 3px rgb(196 61 50 / 18%);
+}
+
+.field-error {
+  display: block;
+  margin-top: 3px;
+  padding: 6px 9px;
+  border-left: 3px solid #c43d32;
+  border-radius: 0 6px 6px 0;
+  background: #fff0ee;
+  color: #8f2119;
+  font-size: .86rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.password-strength {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 1.2em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #eef2ef;
+  color: var(--mut);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.password-strength[data-strength="weak"] {
+  color: #a33b2d;
+  background: #fde9e7;
+}
+
+.password-strength[data-strength="strong"] {
+  color: var(--g2);
+  background: #e4f4eb;
+}
+
+.password-strength[data-strength="medium"] {
+  color: #9a6500;
+  background: #fff3d6;
 }
 
 /* Disabled controls */
@@ -169,14 +219,6 @@ legend {
 
 .hint a {
   color: var(--g);
-}
-
-/* Demo account buttons */
-.demo {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
 }
 
 /* Mobile form layout */
