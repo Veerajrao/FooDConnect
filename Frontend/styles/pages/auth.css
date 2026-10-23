@@ -82,13 +82,6 @@
   gap: 12px;
 }
 
-.demo {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
 .chk {
   display: flex;
   gap: 8px;

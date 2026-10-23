@@ -94,7 +94,7 @@
 
             <div class="msg" id="aMsg" role="alert"></div>
 
-            <form id="regForm">
+            <form id="regForm" novalidate>
 
               <fieldset>
                 <legend>I want to join as</legend>
@@ -132,8 +132,10 @@
                   Phone
                   <input type="tel"
                          id="rPhone"
-                         pattern="[0-9+ ]{10,15}"
-                         title="Enter 10 to 15 digits"
+                         inputmode="numeric"
+                         maxlength="10"
+                         pattern="[0-9]{10}"
+                         title="Enter a 10-digit phone number"
                          required>
                 </label>
               </div>
@@ -156,8 +158,10 @@
                   <input type="password"
                          id="rPass"
                          minlength="6"
+                         maxlength="128"
                          autocomplete="new-password"
                          required>
+                  <small class="password-strength" id="rPassStrength" aria-live="polite">Use at least 6 characters.</small>
                 </label>
 
                 <label>
@@ -165,6 +169,7 @@
                   <input type="password"
                          id="rPass2"
                          minlength="6"
+                         maxlength="128"
                          autocomplete="new-password"
                          required>
                 </label>
