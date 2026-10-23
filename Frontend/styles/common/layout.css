@@ -10,6 +10,7 @@
   box-sizing: border-box;
 }
 
+/* Header */
 header {
   position: sticky;
   top: 0;
@@ -21,7 +22,8 @@ header {
   padding: 12px 5%;
   background: #174C3E;
   color: #FFFFFF;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border: none;
+  box-shadow: none;
 }
 
 /* Logo */
@@ -42,7 +44,7 @@ header {
 }
 
 .logo-txt {
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: "Bricolage Grotesque", sans-serif;
   font-size: 1.5rem;
   line-height: 1.1;
   font-weight: 800;
@@ -54,13 +56,15 @@ header {
   color: #FFB938;
 }
 
-/* Desktop navigation */
+/* Navigation */
 header nav {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 18px;
   min-width: 0;
+  border: none;
+  box-shadow: none;
 }
 
 header nav a {
@@ -72,10 +76,7 @@ header nav a {
 }
 
 header nav a:hover,
-header nav a:focus-visible {
-  color: #FFB938;
-}
-
+header nav a:focus-visible,
 header nav a[aria-current="page"] {
   color: #FFB938;
 }
@@ -88,16 +89,25 @@ header nav a[aria-current="page"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-sizing: border-box;
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  border: 2px solid #FFB938;
   border-radius: 50%;
-  color: #174C3E;
-  background: #FFFFFF;
+  color: #FFB938;
+  background: transparent;
   text-decoration: none;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
-.profile-icon-link:hover {
+.profile-icon-link svg {
+  width: 23px;
+  height: 23px;
+  display: block;
+}
+
+.profile-icon-link:hover,
+.profile-icon-link:focus-visible {
   background: #FFB938;
   color: #174C3E;
   transform: translateY(-1px);
@@ -116,6 +126,7 @@ header nav a[aria-current="page"] {
   font: inherit;
   font-weight: 700;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .logout-btn:hover {
@@ -127,7 +138,7 @@ header nav a[aria-current="page"] {
   cursor: wait;
 }
 
-/* Hamburger button */
+/* Hamburger */
 .burger {
   display: none;
   align-items: center;
@@ -152,7 +163,6 @@ header nav a[aria-current="page"] {
   border-radius: 2px;
 }
 
-/* Backdrop */
 .backdrop {
   display: none;
 }
@@ -185,7 +195,7 @@ footer b {
   color: #FFFFFF;
 }
 
-/* Desktop alignment: logo, links + Logout, profile icon */
+/* Desktop navigation */
 @media (min-width: 801px) {
   header {
     justify-content: flex-start;
@@ -199,25 +209,43 @@ footer b {
   header #nav {
     order: 2;
     flex: 0 1 auto;
+    justify-content: flex-start;
+    gap: 18px;
   }
 
-  header .profile-icon-link {
-    order: 3;
+  /* Hide text Profile link on desktop */
+  header nav .profile-menu-link {
+    display: none;
+  }
+
+  /* Profile icon is inside nav, after Available food */
+  header nav .profile-icon-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    order: 6;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  /* Logout comes immediately after the profile icon */
+  header nav .logout-btn {
+    order: 7;
     margin-left: 0;
     flex-shrink: 0;
+  }
+
+  /* Do not display an old icon outside nav */
+  header > .profile-icon-link {
+    display: none;
   }
 
   header #burger {
     display: none;
   }
-
-  /* Hide the duplicate Profile text on desktop only */
-  header nav .profile-menu-link {
-    display: none;
-  }
 }
 
-/* Tablet and mobile navigation */
+/* Tablet and mobile */
 @media (max-width: 800px) {
   header {
     gap: 10px;
@@ -250,7 +278,6 @@ footer b {
     display: none;
     position: absolute;
     top: 100%;
-    left: auto;
     right: 5%;
     width: min(290px, 90vw);
     max-height: calc(100vh - 75px);
@@ -261,7 +288,7 @@ footer b {
     gap: 0;
     padding: 12px 18px 20px;
     background: #174C3E;
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    border: none;
     border-radius: 0 0 14px 14px;
     box-shadow: 0 12px 20px rgb(0 0 0 / 18%);
   }
@@ -284,6 +311,12 @@ footer b {
 
   header nav .profile-menu-link {
     display: block;
+  }
+
+  header nav .profile-icon-link {
+    display: inline-flex;
+    align-self: flex-start;
+    margin: 12px 0 0;
   }
 
   header nav .logout-btn {

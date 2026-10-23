@@ -119,3 +119,71 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* =========================================
+   FoodConnect - Input validation shadows
+   ========================================= */
+
+/* Smooth shadow transitions */
+#login input,
+#register input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Neutral shadow by default on registration */
+#register input {
+  border-color: #cbd5ce;
+  box-shadow: 0 1px 3px rgba(23, 76, 62, 0.06);
+}
+
+#register input:hover,
+#register input:focus {
+  border-color: #9caea3;
+  box-shadow: 0 0 0 3px rgba(23, 76, 62, 0.10);
+  outline: none;
+}
+
+/* Login: invalid input = red shadow */
+#login input:invalid:not(:placeholder-shown) {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+}
+
+/* Login: valid input = green shadow */
+#login input:valid:not(:placeholder-shown) {
+  border-color: #21845D;
+  box-shadow: 0 0 0 3px rgba(33, 132, 93, 0.15);
+}
+
+/* Login hover/focus */
+#login input:hover,
+#login input:focus {
+  outline: none;
+}
+
+#login input:focus {
+  box-shadow: 0 0 0 3px rgba(23, 76, 62, 0.14);
+}
+
+/* Keep registration neutral even when focused */
+#register input:focus {
+  border-color: #9caea3;
+  box-shadow: 0 0 0 3px rgba(23, 76, 62, 0.10);
+  outline: none;
+}
+
+/* Login input glow */
+#login input:focus {
+  outline: none !important;
+  border-color: #21845D !important;
+  box-shadow: 0 0 0 4px rgba(33, 132, 93, 0.25) !important;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Register hover stays neutral */
+#register input:hover,
+#register input:focus {
+  outline: none;
+  border-color: #9caea3;
+  box-shadow: 0 0 0 3px rgba(23, 76, 62, 0.10);
+}

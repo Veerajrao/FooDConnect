@@ -21,6 +21,36 @@ img {
   height: auto;
 }
 
+/* Desktop navbar: Available food -> Profile -> Logout */
+/* Desktop navbar: Available food -> Profile -> Logout */
+@media (min-width: 801px) {
+  header {
+    display: flex;
+    align-items: center;
+  }
+
+  header nav {
+    display: flex;
+    align-items: center;
+  }
+
+  header nav .profile-menu-link {
+    display: none;
+  }
+
+  header .profile-icon-link {
+    order: 1;
+    margin-left: 0;
+    margin-right: 0;
+    flex-shrink: 0;
+  }
+
+  header nav .logout-btn {
+    margin-left: 0;
+    flex-shrink: 0;
+  }
+}
+
 /* Tablet and smaller laptops */
 @media (max-width: 1024px) {
   .hero {

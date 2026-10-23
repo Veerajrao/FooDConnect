@@ -41,7 +41,6 @@ async function renderNavigation() {
   const loggedIn = Boolean(user);
   const currentPage = document.body.dataset.page;
 
-  // Show only the links allowed for the current login state.
   const links = navigationPages.filter((item) => {
     if (item.guestOnly && loggedIn) return false;
     if (item.loggedInOnly && !loggedIn) return false;
@@ -54,21 +53,23 @@ async function renderNavigation() {
       (item.page === "dashboard" && currentPage === "dash");
 
     return `
-      <a href="${item.page}.html"
-         class="${item.page === "dashboard" ? "profile-menu-link" : ""}"
-         ${active ? 'aria-current="page"' : ""}>
+      <a
+        href="${item.page}.html"
+        class="${item.page === "dashboard" ? "profile-menu-link" : ""}"
+        ${active ? 'aria-current="page"' : ""}
+      >
         ${item.label}
       </a>
     `;
   }).join("");
 
-  // Remove previously created profile icons.
+  // Remove old profile icons before recreating the icon.
   header.querySelectorAll(".profile-icon-link").forEach((icon) => {
     icon.remove();
   });
 
-  // Create the profile icon only for logged-in users.
   if (loggedIn) {
+    // Create the profile icon.
     const profileLink = document.createElement("a");
 
     profileLink.href = "dashboard.html";
@@ -84,26 +85,17 @@ async function renderNavigation() {
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="2"
+        stroke-width="1.8"
         stroke-linecap="round"
         stroke-linejoin="round"
-        aria-hidden="true">
-        <circle cx="12" cy="8" r="4"></circle>
-        <path d="M5 21v-2a7 7 0 0 1 14 0v2"></path>
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="8" r="3.5"></circle>
+        <path d="M5 20a7 7 0 0 1 14 0"></path>
       </svg>
     `;
 
-    // Keep the icon outside the mobile menu.
-    // Desktop CSS places it after the navigation and Logout.
-    const burger = header.querySelector("#burger");
-
-    if (burger) {
-      header.insertBefore(profileLink, burger);
-    } else {
-      header.appendChild(profileLink);
-    }
-
-    // Add Logout inside the navigation menu.
+    // Add Logout as the last item inside the navigation.
     const logoutButton = document.createElement("button");
 
     logoutButton.type = "button";
@@ -129,10 +121,22 @@ async function renderNavigation() {
       }
     });
 
+    // Put Profile immediately after Available food.
+    const availableFoodLink = [...nav.querySelectorAll("a")].find(
+      (link) => link.getAttribute("href") === "listings.html"
+    );
+
+    if (availableFoodLink) {
+      availableFoodLink.insertAdjacentElement("afterend", profileLink);
+    } else {
+      nav.appendChild(profileLink);
+    }
+
+    // Profile is before Logout.
     nav.appendChild(logoutButton);
   }
 
-  // Close the mobile menu after selecting a link.
+  // Close the mobile menu after choosing a page.
   nav.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => toggleMenu(false));
   });
@@ -145,9 +149,10 @@ function toggleMenu(forceState) {
 
   if (!nav) return;
 
-  const shouldOpen = typeof forceState === "boolean"
-    ? forceState
-    : !nav.classList.contains("open");
+  const shouldOpen =
+    typeof forceState === "boolean"
+      ? forceState
+      : !nav.classList.contains("open");
 
   nav.classList.toggle("open", shouldOpen);
 
