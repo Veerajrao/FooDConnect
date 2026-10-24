@@ -1,12 +1,15 @@
 
 /*
  * FoodConnect - Accessible Welcome Modal
- * Supports keyboard navigation, focus management and reminders.
+ * Handles keyboard navigation, focus management and login reminders.
  */
 
 const WELCOME_POPUP_INTERVAL = 30 * 1000;
 
 let previousFocus = null;
+let welcomeReminderTimer = null;
+let reminderDismissed = false;
+let loginCheckInProgress = false;
 
 const FOCUSABLE_SELECTOR = [
   'a[href]',
@@ -15,20 +18,25 @@ const FOCUSABLE_SELECTOR = [
   'select:not([disabled])',
   'textarea:not([disabled])',
   '[tabindex]:not([tabindex="-1"])'
-].join(',');
+].join(",");
 
 function getModalFocusables(modal) {
   return [...modal.querySelectorAll(FOCUSABLE_SELECTOR)].filter(
     (element) => {
-      const visible = element.getClientRects().length > 0;
-      const enabled = !element.hasAttribute("disabled");
-      const selectedRadio =
-        element.type !== "radio" || element.checked;
-
-      return visible && enabled && selectedRadio;
+      return (
+        element.getClientRects().length > 0 &&
+        !element.disabled &&
+        element.getAttribute("aria-hidden") !== "true" &&
+        (element.type !== "radio" ||
+          element.checked ||
+          ![...modal.querySelectorAll(
+            `input[type="radio"][name="${element.name}"]`
+          )].some((radio) => radio.checked))
+      );
     }
   );
 }
+
 
 function openWelcome() {
   if (document.body.dataset.page !== "home") return;
@@ -51,7 +59,6 @@ function openWelcome() {
   modal.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
 
-  // Move keyboard focus into the popup when it opens.
   if (isOpening) {
     const focusables = getModalFocusables(modal);
     const initialFocus =
@@ -74,7 +81,9 @@ function closeWelcome() {
   modal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
 
-  // Return focus to the element that opened the popup.
+  // Do not reopen the automatic reminder after manual dismissal.
+  reminderDismissed = true;
+
   const focusTarget = previousFocus;
   previousFocus = null;
 
@@ -103,21 +112,37 @@ async function startWelcomeReminder() {
   if (!modal) return;
 
   if (await isLoggedIn()) {
-    closeWelcome();
+    if (!modal.hidden) closeWelcome();
     return;
   }
 
-  // Show the first popup immediately.
+  // Show the initial welcome popup for guests.
   openWelcome();
 
-  // Repeat the reminder every 30 seconds for guests.
-  setInterval(async () => {
-    if (await isLoggedIn()) {
-      closeWelcome();
-      return;
-    }
+  // Check login status periodically, without forcing the popup open again.
+  if (welcomeReminderTimer !== null) {
+    clearInterval(welcomeReminderTimer);
+  }
 
-    openWelcome();
+  welcomeReminderTimer = setInterval(async () => {
+    if (loginCheckInProgress) return;
+
+    loginCheckInProgress = true;
+
+    try {
+      if (await isLoggedIn()) {
+        clearInterval(welcomeReminderTimer);
+        welcomeReminderTimer = null;
+
+        const currentModal = document.getElementById("welcome");
+
+        if (currentModal && !currentModal.hidden) {
+          closeWelcome();
+        }
+      }
+    } finally {
+      loginCheckInProgress = false;
+    }
   }, WELCOME_POPUP_INTERVAL);
 }
 
@@ -146,26 +171,21 @@ document.addEventListener("keydown", (event) => {
 
   const first = focusables[0];
   const last = focusables[focusables.length - 1];
+  const activeElement = document.activeElement;
 
-  // Keep keyboard focus inside the open popup.
-  if (
-    event.shiftKey &&
-    (document.activeElement === first ||
-      !modal.contains(document.activeElement))
-  ) {
+  if (!modal.contains(activeElement)) {
+    event.preventDefault();
+    (event.shiftKey ? last : first).focus();
+  } else if (event.shiftKey && activeElement === first) {
     event.preventDefault();
     last.focus();
-  } else if (
-    !event.shiftKey &&
-    (document.activeElement === last ||
-      !modal.contains(document.activeElement))
-  ) {
+  } else if (!event.shiftKey && activeElement === last) {
     event.preventDefault();
     first.focus();
   }
 });
 
-// Close when the user clicks the backdrop.
+// Close when the user clicks the popup backdrop.
 document.addEventListener("click", (event) => {
   const modal = document.getElementById("welcome");
 
@@ -174,7 +194,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
-// Keep the existing HTML onclick handlers working.
+// Preserve existing HTML onclick handlers.
 window.openWelcome = openWelcome;
 window.closeWelcome = closeWelcome;
 

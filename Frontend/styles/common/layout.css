@@ -27,13 +27,17 @@ header {
 }
 
 /* Logo */
+
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
   flex-shrink: 0;
+  text-decoration: none;
+  color: inherit;
 }
+
 
 .logo-img {
   display: block;

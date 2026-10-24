@@ -1,9 +1,10 @@
 
 /*
  * FoodConnect - Home Page
- * Loads impact statistics and handles guest access.
+ * Loads impact statistics and handles homepage-specific access.
  */
 
+// Load homepage impact statistics.
 async function loadHomeStats() {
   const statElements = {
     meals: $("#sMeals"),
@@ -48,6 +49,7 @@ async function loadHomeStats() {
   }
 }
 
+// Get the currently logged-in user.
 async function getHomeUser() {
   try {
     const result = await getCurrentUser();
@@ -57,10 +59,10 @@ async function getHomeUser() {
   }
 }
 
+// Hide Available Food links for donors on the homepage.
 async function setupHomeAccess() {
   const user = await getHomeUser();
 
-  // Hide Available Food links for donors.
   if (user?.role === "donor") {
     document
       .querySelectorAll('a[href="listings.html"]')
@@ -70,39 +72,7 @@ async function setupHomeAccess() {
   }
 }
 
-// Handle both the homepage button and the navigation link.
-document.addEventListener("click", async (event) => {
-  if (document.body.dataset.page !== "home") return;
-
-  const target =
-    event.target instanceof Element
-      ? event.target
-      : event.target?.parentElement;
-
-  const availableFoodLink = target?.closest(
-    'a[href="listings.html"]'
-  );
-
-  if (!availableFoodLink || availableFoodLink.hidden) return;
-
-  event.preventDefault();
-
-  const user = await getHomeUser();
-
-  if (user) {
-    // Logged-in users can open the listings.
-    window.location.href = "listings.html";
-    return;
-  }
-
-  // Guests see the popup only after clicking Available Food.
-  if (typeof window.openWelcome === "function") {
-    window.openWelcome();
-  } else {
-    window.location.href = "login.html";
-  }
-});
-
+// Initialize homepage features.
 document.addEventListener("DOMContentLoaded", () => {
   loadHomeStats();
   setupHomeAccess();
