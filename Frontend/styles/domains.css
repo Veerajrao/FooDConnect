@@ -1,0 +1,49 @@
+/* Accessibility and layout rules scoped to the Who can take part page. */
+header > .logo {
+  text-decoration: none;
+}
+
+#domains > .wrap > h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+#domains .participant-group + .participant-group {
+  margin-top: 34px;
+}
+
+#domains .participant-group > h2 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+#domains .participant-grid {
+  list-style: none !important;
+  padding: 0;
+  margin: 0;
+}
+
+#domains .participant-grid > li {
+  list-style: none !important;
+}
+
+#domains .participant-grid > li::marker {
+  content: "";
+}
+
+#domains .participant-card {
+  height: 100%;
+}
+
+#domains .participant-card .ico {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 600px) {
+  #domains .participant-group + .participant-group {
+    margin-top: 26px;
+  }
+}
