@@ -1,7 +1,7 @@
 
 /* ==========================================================
    WELCOME MODAL CSS
-   Welcome popup, login panel, buttons and overlay
+   Compact and responsive login popup
    ========================================================== */
 
 /* Modal overlay */
@@ -12,25 +12,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 12px;
   background: rgb(12 27 21 / 65%);
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
-/* Respect the HTML hidden attribute */
+/* Keep popup hidden when closed */
 .modal[hidden] {
-  display: none;
+  display: none !important;
 }
 
 /* Popup content */
 .modal-box {
   position: relative;
   width: 100%;
-  max-width: 460px;
-  max-height: calc(100vh - 40px);
+  max-width: 380px;
+  max-height: calc(100vh - 24px);
+  max-height: calc(100dvh - 24px);
+  overflow-x: hidden;
   overflow-y: auto;
-  padding: 32px;
-  border-radius: 18px;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 16px;
   background: #fff;
   color: var(--ink);
   box-shadow: 0 20px 70px rgb(0 0 0 / 25%);
@@ -40,80 +44,97 @@
 /* Close button */
 .modal-x {
   position: absolute;
-  top: 12px;
-  right: 14px;
+  top: 8px;
+  right: 8px;
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   border: 0;
   border-radius: 50%;
   background: #f0f3ef;
   color: var(--ink);
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
-}
-
-.modal-x:hover {
-  background: #e1e8e2;
 }
 
 /* Logo */
 .modal-logo {
   display: block;
-  width: 72px;
-  height: 80px;
+  width: 54px;
+  height: 58px;
   object-fit: contain;
-  margin: 0 auto 14px;
+  margin: 0 auto 6px;
 }
 
 /* Heading and subtitle */
 .modal-box h2 {
-  margin-bottom: 8px;
+  margin: 0 24px 6px;
   text-align: center;
   color: var(--g);
-  font-size: 1.8rem;
+  font-size: 1.4rem;
+  line-height: 1.3;
 }
 
 .wsub {
-  margin-bottom: 20px;
+  margin: 0 0 12px;
   color: var(--mut);
   text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 /* Login role selector */
 .modal-box .roles {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 6px;
+  margin-bottom: 2px;
 }
 
 .modal-box .ro {
   flex-direction: column;
   justify-content: center;
-  padding: 10px 6px;
+  padding: 7px 4px;
   text-align: center;
+  font-size: 0.85rem;
 }
 
 .modal-box .ro span {
   align-items: center;
 }
 
-/* Modal form */
+/* Compact form spacing */
 .modal-box form {
-  gap: 14px;
+  gap: 9px;
+}
+
+.modal-box form label {
+  font-size: 0.9rem;
+}
+
+/* Compact email and password fields */
+.modal-box input:not([type="radio"]):not([type="checkbox"]),
+.modal-box select {
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 11px;
+  box-sizing: border-box;
+  font-size: 0.9rem;
 }
 
 .modal-box .btn {
   width: 100%;
-  min-height: 46px;
+  min-height: 42px;
+  padding: 9px 12px;
+  font-size: 0.9rem;
 }
 
 /* Registration link */
 .wlinks {
-  margin-top: 18px;
+  margin-top: 10px;
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .wlinks a {
@@ -124,12 +145,13 @@
 /* Maybe later button */
 .later {
   display: block;
-  margin: 14px auto 0;
-  padding: 8px 14px;
+  margin: 6px auto 0;
+  padding: 6px 12px;
   border: 0;
   background: transparent;
   color: var(--mut);
   font: inherit;
+  font-size: 0.9rem;
   cursor: pointer;
 }
 
@@ -142,7 +164,7 @@
 @keyframes modal-appear {
   from {
     opacity: 0;
-    transform: translateY(12px) scale(0.98);
+    transform: translateY(8px) scale(0.98);
   }
 
   to {
@@ -151,20 +173,33 @@
   }
 }
 
-/* Smaller screens */
+/* Mobile screens */
 @media (max-width: 480px) {
   .modal {
-    padding: 12px;
+    padding: 10px;
   }
 
   .modal-box {
-    max-height: calc(100vh - 24px);
-    padding: 26px 18px;
+    max-width: 340px;
+    max-height: calc(100vh - 20px);
+    max-height: calc(100dvh - 20px);
+    padding: 16px;
     border-radius: 14px;
   }
 
+  .modal-logo {
+    width: 48px;
+    height: 52px;
+    margin-bottom: 5px;
+  }
+
   .modal-box h2 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+  }
+
+  .wsub {
+    margin-bottom: 10px;
+    font-size: 0.85rem;
   }
 
   .modal-box .roles {
@@ -172,8 +207,12 @@
   }
 
   .modal-box .ro {
-    padding: 8px 4px;
-    font-size: 0.9rem;
+    padding: 6px 3px;
+    font-size: 0.8rem;
+  }
+
+  .modal-box form {
+    gap: 8px;
   }
 }
 
@@ -182,4 +221,22 @@
   .modal-box {
     animation: none;
   }
+}
+
+/* Accessibility: visible keyboard focus */
+#burger:focus-visible,
+#nav a:focus-visible,
+#nav button:focus-visible,
+#welcome button:focus-visible,
+#welcome a:focus-visible,
+#welcome input:focus-visible,
+#welcome select:focus-visible {
+  outline: 3px solid #f5b82e;
+  outline-offset: 3px;
+}
+
+/* Make keyboard focus visible on form fields */
+#welcome input:focus-visible,
+#welcome select:focus-visible {
+  border-color: #17624b;
 }

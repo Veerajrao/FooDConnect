@@ -1,6 +1,7 @@
 /*
  * FoodConnect - Login Page
  * Sends login credentials to the PHP backend.
+ * Redirects users according to their authenticated role.
  */
 
 const loginForm = $("#loginForm");
@@ -35,14 +36,21 @@ function setLoginFieldError(input, message) {
 function validateLoginField(input) {
   if (input?.id === "lEmail") {
     const value = input.value.trim();
-    if (!value)
-      return (setLoginFieldError(input, "Enter your email address."), false);
-    if (!input.validity.valid)
-      return (setLoginFieldError(input, "Enter a valid email address."), false);
+
+    if (!value) {
+      setLoginFieldError(input, "Enter your email address.");
+      return false;
+    }
+
+    if (!input.validity.valid) {
+      setLoginFieldError(input, "Enter a valid email address.");
+      return false;
+    }
   }
 
   if (input?.id === "lPass" && !input.value) {
-    return (setLoginFieldError(input, "Enter your password."), false);
+    setLoginFieldError(input, "Enter your password.");
+    return false;
   }
 
   setLoginFieldError(input, "");
@@ -52,38 +60,74 @@ function validateLoginField(input) {
 if (loginForm) {
   const emailInput = $("#lEmail");
   const passwordInput = $("#lPass");
-  const loginFields = [emailInput, passwordInput].filter(Boolean);
+
+  const loginFields = [
+    emailInput,
+    passwordInput
+  ].filter(Boolean);
 
   loginFields.forEach((input) => {
     input.addEventListener("input", () => {
       validateLoginField(input);
-      if (loginMessage) loginMessage.style.display = "none";
+
+      if (loginMessage) {
+        loginMessage.style.display = "none";
+      }
     });
-    input.addEventListener("blur", () => validateLoginField(input));
+
+    input.addEventListener("blur", () => {
+      validateLoginField(input);
+    });
   });
 
   loginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const selectedRole = document.querySelector('input[name="lrole"]:checked');
+    const selectedRole = document.querySelector(
+      'input[name="lrole"]:checked'
+    );
 
     const invalidField = loginFields.find(
-      (input) => !validateLoginField(input),
+      (input) => !validateLoginField(input)
     );
+
     if (invalidField) {
       invalidField.focus();
       return;
     }
 
-    if (!emailInput || !passwordInput || !selectedRole) return;
+    if (!emailInput || !passwordInput) {
+      return;
+    }
+
+    if (!selectedRole) {
+      if (loginMessage) {
+        msg(
+          loginMessage,
+          "Please select your account type.",
+          true
+        );
+      }
+      return;
+    }
 
     const email = emailInput.value.trim().toLowerCase();
     const password = passwordInput.value;
-    const role = selectedRole.value;
 
-    const submitButton = loginForm.querySelector('button[type="submit"]');
+    // Normalize the selected role.
+    let role = selectedRole.value.trim().toLowerCase();
 
-    if (submitButton) submitButton.disabled = true;
+    if (["recipient", "organization"].includes(role)) {
+      role = "organisation";
+    }
+
+    const submitButton = loginForm.querySelector(
+      'button[type="submit"]'
+    );
+
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
 
     try {
       const result = await apiRequest("login.php", {
@@ -91,26 +135,56 @@ if (loginForm) {
         body: JSON.stringify({
           email,
           password,
-          role,
-        }),
+          role
+        })
       });
+
+      if (!result?.success || !result?.user?.role) {
+        throw new Error(
+          result?.message || "Unable to verify your account."
+        );
+      }
 
       if (loginMessage) {
         loginMessage.style.display = "none";
       }
 
-      // Successful authentication: open the dashboard.
-      window.location.href = "dashboard.html";
+      // Use the role authenticated by the PHP backend.
+      const authenticatedRole = String(
+        result.user.role
+      ).trim().toLowerCase();
+
+      if (authenticatedRole === "admin") {
+        window.location.replace("admin.html");
+        return;
+      }
+
+      if (
+        authenticatedRole === "donor" ||
+        authenticatedRole === "organisation"
+      ) {
+        window.location.replace("dashboard.html");
+        return;
+      }
+
+      throw new Error("Unrecognised account type.");
+
     } catch (error) {
       if (loginMessage) {
         msg(
           loginMessage,
-          error.message || "Login failed. Please check your details.",
-          true,
+          error.message ||
+            "Login failed. Please check your details.",
+          true
         );
+      } else {
+        console.error("FoodConnect login error:", error);
       }
+
     } finally {
-      if (submitButton) submitButton.disabled = false;
+      if (submitButton) {
+        submitButton.disabled = false;
+      }
     }
   });
 }

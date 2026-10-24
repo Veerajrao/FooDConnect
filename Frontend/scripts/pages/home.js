@@ -1,6 +1,7 @@
+
 /*
  * FoodConnect - Home Page
- * Loads impact statistics from the PHP backend.
+ * Loads impact statistics and handles guest access.
  */
 
 async function loadHomeStats() {
@@ -24,43 +25,85 @@ async function loadHomeStats() {
     const stats = result.stats || result;
 
     if (statElements.meals) {
-      statElements.meals.textContent = (
-        Number(stats.total_meals) || 0
-      ).toLocaleString();
+      statElements.meals.textContent =
+        (Number(stats.total_meals) || 0).toLocaleString();
     }
 
     if (statElements.donations) {
-      statElements.donations.textContent = (
-        Number(stats.total_donations) || 0
-      ).toLocaleString();
+      statElements.donations.textContent =
+        (Number(stats.total_donations) || 0).toLocaleString();
     }
 
     if (statElements.donors) {
-      statElements.donors.textContent = (
-        Number(stats.total_donors) || 0
-      ).toLocaleString();
+      statElements.donors.textContent =
+        (Number(stats.total_donors) || 0).toLocaleString();
     }
 
     if (statElements.organisations) {
-      statElements.organisations.textContent = (
-        Number(stats.total_organisations) || 0
-      ).toLocaleString();
+      statElements.organisations.textContent =
+        (Number(stats.total_organisations) || 0).toLocaleString();
     }
   } catch (error) {
     console.error("Unable to load FoodConnect statistics:", error);
   }
 }
 
-document.addEventListener("DOMContentLoaded", loadHomeStats);
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const availableFoodLink = $("#homeAvailableFood");
-  if (!availableFoodLink) return;
-
+async function getHomeUser() {
   try {
-    const result = await apiRequest("current-user.php");
-    if (result.user?.role === "donor") availableFoodLink.hidden = true;
+    const result = await getCurrentUser();
+    return result?.user || null;
   } catch (error) {
-    // Guests and unavailable sessions can still browse available listings.
+    return null;
   }
+}
+
+async function setupHomeAccess() {
+  const user = await getHomeUser();
+
+  // Hide Available Food links for donors.
+  if (user?.role === "donor") {
+    document
+      .querySelectorAll('a[href="listings.html"]')
+      .forEach((link) => {
+        link.hidden = true;
+      });
+  }
+}
+
+// Handle both the homepage button and the navigation link.
+document.addEventListener("click", async (event) => {
+  if (document.body.dataset.page !== "home") return;
+
+  const target =
+    event.target instanceof Element
+      ? event.target
+      : event.target?.parentElement;
+
+  const availableFoodLink = target?.closest(
+    'a[href="listings.html"]'
+  );
+
+  if (!availableFoodLink || availableFoodLink.hidden) return;
+
+  event.preventDefault();
+
+  const user = await getHomeUser();
+
+  if (user) {
+    // Logged-in users can open the listings.
+    window.location.href = "listings.html";
+    return;
+  }
+
+  // Guests see the popup only after clicking Available Food.
+  if (typeof window.openWelcome === "function") {
+    window.openWelcome();
+  } else {
+    window.location.href = "login.html";
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadHomeStats();
+  setupHomeAccess();
 });

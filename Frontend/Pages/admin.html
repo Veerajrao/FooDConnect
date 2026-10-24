@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="FoodConnect administrator dashboard for viewing platform statistics and activity.">
+  <title>Admin Dashboard | FoodConnect</title>
+  <link rel="stylesheet" href="../styles/pages/admin.css">
+  <script src="../scripts/pages/admin.js" defer></script>
+</head>
+
+<body data-page="admin">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header>
+    <div class="brand">FoodConnect <span class="muted">/ Admin</span></div>
+    <div class="header-actions">
+      <button class="button secondary" id="refreshButton" type="button">
+        Refresh data
+      </button>
+      <button class="button" id="logoutButton" type="button">
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <h1>Admin Dashboard</h1>
+    <p class="intro muted">Read-only overview of FoodConnect activity.</p>
+
+    <div id="pageMessage" class="notice" role="status" aria-live="polite">
+      Checking your admin session…
+    </div>
+
+    <section id="dashboardContent" hidden aria-label="Platform overview">
+      <p id="welcomeMessage" class="muted"></p>
+      <p id="lastUpdated" class="muted"></p>
+
+      <h2>Platform statistics</h2>
+      <div class="stats" id="statsGrid"></div>
+
+      <section class="panel" aria-labelledby="usersHeading">
+        <h2 id="usersHeading">Recent registered users</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">City</th>
+                <th scope="col">Role</th>
+                <th scope="col">Registered</th>
+              </tr>
+            </thead>
+            <tbody id="usersBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="listingsHeading">
+        <h2 id="listingsHeading">Recent food listings</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Food</th>
+                <th scope="col">Kind</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Donor</th>
+                <th scope="col">Status</th>
+                <th scope="col">Collect before</th>
+                <th scope="col">Created</th>
+              </tr>
+            </thead>
+            <tbody id="listingsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="requestsHeading">
+        <h2 id="requestsHeading">Recent food requests</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Request ID</th>
+                <th scope="col">Food</th>
+                <th scope="col">Requester</th>
+                <th scope="col">Status</th>
+                <th scope="col">Requested</th>
+                <th scope="col">Updated</th>
+              </tr>
+            </thead>
+            <tbody id="requestsBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer>FoodConnect · Administrator access</footer>
+</body>
+</html>

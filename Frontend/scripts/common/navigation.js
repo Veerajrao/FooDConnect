@@ -2,6 +2,7 @@
 /*
  * FoodConnect - Navigation
  * Handles navigation, login state, profile icon and mobile menu.
+ * Guests clicking Available Food are redirected to Home to see the login popup.
  */
 
 const navigationPages = [
@@ -63,7 +64,7 @@ async function renderNavigation() {
     `;
   }).join("");
 
-  // Remove old profile icons before recreating the icon.
+  // Remove old profile icons before recreating them.
   header.querySelectorAll(".profile-icon-link").forEach((icon) => {
     icon.remove();
   });
@@ -95,7 +96,7 @@ async function renderNavigation() {
       </svg>
     `;
 
-    // Add Logout as the last item inside the navigation.
+    // Create the Logout button.
     const logoutButton = document.createElement("button");
 
     logoutButton.type = "button";
@@ -121,10 +122,10 @@ async function renderNavigation() {
       }
     });
 
-    // Put Profile immediately after Available food.
-    const availableFoodLink = [...nav.querySelectorAll("a")].find(
-      (link) => link.getAttribute("href") === "listings.html"
-    );
+    // Put Profile immediately after Available Food.
+    const availableFoodLink = [
+      ...nav.querySelectorAll("a")
+    ].find((link) => link.getAttribute("href") === "listings.html");
 
     if (availableFoodLink) {
       availableFoodLink.insertAdjacentElement("afterend", profileLink);
@@ -132,16 +133,42 @@ async function renderNavigation() {
       nav.appendChild(profileLink);
     }
 
-    // Profile is before Logout.
+    // Keep Logout as the last navigation item.
     nav.appendChild(logoutButton);
   }
 
-  // Close the mobile menu after choosing a page.
+  // Handle navigation clicks.
   nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => toggleMenu(false));
+    link.addEventListener("click", (event) => {
+      const isAvailableFood =
+        link.getAttribute("href") === "listings.html";
+
+      if (isAvailableFood && !loggedIn) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        toggleMenu(false);
+
+        if (currentPage === "home") {
+          if (typeof window.openWelcome === "function") {
+            window.openWelcome();
+          } else {
+            window.location.href = "login.html";
+          }
+        } else {
+          window.location.href = "home.html";
+        }
+
+        return;
+      }
+
+      // Close the mobile menu after selecting a page.
+      toggleMenu(false);
+    });
   });
 }
 
+// Toggle mobile menu and change hamburger to X.
 function toggleMenu(forceState) {
   const nav = document.querySelector("#nav");
   const backdrop = document.querySelector("#backdrop");
@@ -166,6 +193,42 @@ function toggleMenu(forceState) {
       "aria-label",
       shouldOpen ? "Close menu" : "Open menu"
     );
+
+    // X when open, hamburger when closed.
+    burger.innerHTML = shouldOpen
+      ? `
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      `
+      : `
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M4 6h16"></path>
+          <path d="M4 12h16"></path>
+          <path d="M4 18h16"></path>
+        </svg>
+      `;
   }
 }
 

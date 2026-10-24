@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 
@@ -5,32 +6,34 @@ header('Content-Type: application/json; charset=utf-8');
 
 require_once __DIR__ . '/../db.php';
 
+function respond(int $status, array $data): void
+{
+    http_response_code($status);
+    echo json_encode($data);
+    exit;
+}
+
 // Allow only POST requests.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
     header('Allow: POST');
 
-    echo json_encode([
+    respond(405, [
         'success' => false,
         'message' => 'Only POST requests are allowed.'
     ]);
-    exit;
 }
 
 // Read JSON request data.
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!is_array($data)) {
-    http_response_code(400);
-
-    echo json_encode([
+    respond(400, [
         'success' => false,
         'message' => 'Invalid JSON request.'
     ]);
-    exit;
 }
 
-// Read and normalize login details.
+// Read login details.
 $email = strtolower(trim($data['email'] ?? ''));
 $password = $data['password'] ?? '';
 $role = strtolower(trim($data['role'] ?? ''));
@@ -40,19 +43,19 @@ if (in_array($role, ['recipient', 'organization'], true)) {
     $role = 'organisation';
 }
 
-// Validate required fields.
-if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $password === '') {
-    http_response_code(422);
-
-    echo json_encode([
+// Validate input.
+if (
+    !filter_var($email, FILTER_VALIDATE_EMAIL) ||
+    !is_string($password) ||
+    $password === ''
+) {
+    respond(422, [
         'success' => false,
         'message' => 'Enter a valid email and password.'
     ]);
-    exit;
 }
 
 try {
-    // Find the account by email.
     $stmt = $pdo->prepare(
         'SELECT id, name, email, password_hash, role
          FROM users
@@ -61,32 +64,48 @@ try {
     );
 
     $stmt->execute(['email' => $email]);
-    $user = $stmt->fetch();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Verify the password, account role and selected account type.
+    // Use the same generic error for invalid credentials.
     if (
         !$user ||
-        !password_verify($password, $user['password_hash']) ||
-        !in_array($user['role'], ['donor', 'organisation'], true) ||
-        ($role !== '' && $role !== $user['role'])
+        !is_string($user['password_hash'] ?? null) ||
+        !password_verify($password, $user['password_hash'])
     ) {
-        http_response_code(401);
-
-        echo json_encode([
+        respond(401, [
             'success' => false,
             'message' => 'Invalid email, password, or account type.'
         ]);
-        exit;
     }
 
-    // Create a fresh session after successful authentication.
+    // Validate the account role.
+    if (!in_array(
+        $user['role'],
+        ['donor', 'organisation', 'admin'],
+        true
+    )) {
+        respond(401, [
+            'success' => false,
+            'message' => 'Invalid email, password, or account type.'
+        ]);
+    }
+
+    // Ensure the selected role matches the account.
+    if ($role !== '' && $role !== $user['role']) {
+        respond(401, [
+            'success' => false,
+            'message' => 'Invalid email, password, or account type.'
+        ]);
+    }
+
+    // Regenerate the session ID after successful authentication.
     session_regenerate_id(true);
 
     $_SESSION['user_id'] = (int) $user['id'];
     $_SESSION['user_name'] = $user['name'];
     $_SESSION['user_role'] = $user['role'];
 
-    echo json_encode([
+    respond(200, [
         'success' => true,
         'message' => 'Login successful.',
         'user' => [
@@ -96,12 +115,12 @@ try {
             'role' => $user['role']
         ]
     ]);
-} catch (PDOException $e) {
-    http_response_code(500);
 
-    echo json_encode([
+} catch (PDOException $e) {
+    error_log('FoodConnect login database error: ' . $e->getMessage());
+
+    respond(500, [
         'success' => false,
         'message' => 'Unable to log in right now.'
     ]);
 }
-

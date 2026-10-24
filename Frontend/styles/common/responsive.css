@@ -361,3 +361,31 @@ img {
     padding-inline: 14px;
   }
 }
+
+/* Accessibility: skip navigation */
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 20000;
+  padding: 10px 14px;
+  background: #ffffff;
+  color: #17624b;
+  border: 2px solid #17624b;
+  border-radius: 6px;
+  font-weight: 700;
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Visible keyboard focus */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #f5b82e;
+  outline-offset: 3px;
+}
