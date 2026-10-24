@@ -51,6 +51,27 @@ a {
   outline-offset: 2px;
 }
 
+/* Skip link: visible when keyboard users focus it */
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  padding: 10px 16px;
+  background: #ffffff;
+  color: #174C3E;
+  border: 2px solid #174C3E;
+  border-radius: 6px;
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+
 /* Main content area */
 main {
   min-height: 70vh;

@@ -1,8 +1,7 @@
 
 /*
- * FoodConnect - Navigation
- * Handles navigation, login state, profile icon and mobile menu.
- * Guests clicking Available Food are redirected to Home to see the login popup.
+ * FoodConnect - Accessible Navigation
+ * Handles navigation, login state, profile, logout and mobile menu.
  */
 
 const navigationPages = [
@@ -58,19 +57,16 @@ async function renderNavigation() {
         href="${item.page}.html"
         class="${item.page === "dashboard" ? "profile-menu-link" : ""}"
         ${active ? 'aria-current="page"' : ""}
-      >
-        ${item.label}
-      </a>
+      >${item.label}</a>
     `;
   }).join("");
 
-  // Remove old profile icons before recreating them.
+  // Remove any previously created profile icons.
   header.querySelectorAll(".profile-icon-link").forEach((icon) => {
     icon.remove();
   });
 
   if (loggedIn) {
-    // Create the profile icon.
     const profileLink = document.createElement("a");
 
     profileLink.href = "dashboard.html";
@@ -90,13 +86,13 @@ async function renderNavigation() {
         stroke-linecap="round"
         stroke-linejoin="round"
         aria-hidden="true"
+        focusable="false"
       >
         <circle cx="12" cy="8" r="3.5"></circle>
         <path d="M5 20a7 7 0 0 1 14 0"></path>
       </svg>
     `;
 
-    // Create the Logout button.
     const logoutButton = document.createElement("button");
 
     logoutButton.type = "button";
@@ -122,7 +118,7 @@ async function renderNavigation() {
       }
     });
 
-    // Put Profile immediately after Available Food.
+    // Place Profile immediately after Available Food.
     const availableFoodLink = [
       ...nav.querySelectorAll("a")
     ].find((link) => link.getAttribute("href") === "listings.html");
@@ -137,7 +133,7 @@ async function renderNavigation() {
     nav.appendChild(logoutButton);
   }
 
-  // Handle navigation clicks.
+  // Handle navigation links only. The homepage CTA is handled separately.
   nav.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", (event) => {
       const isAvailableFood =
@@ -145,7 +141,6 @@ async function renderNavigation() {
 
       if (isAvailableFood && !loggedIn) {
         event.preventDefault();
-        event.stopPropagation();
 
         toggleMenu(false);
 
@@ -162,13 +157,13 @@ async function renderNavigation() {
         return;
       }
 
-      // Close the mobile menu after selecting a page.
+      // Close the mobile menu after selecting a link.
       toggleMenu(false);
     });
   });
 }
 
-// Toggle mobile menu and change hamburger to X.
+// Toggle the mobile menu and update its accessible state.
 function toggleMenu(forceState) {
   const nav = document.querySelector("#nav");
   const backdrop = document.querySelector("#backdrop");
@@ -176,15 +171,18 @@ function toggleMenu(forceState) {
 
   if (!nav) return;
 
+  const wasOpen = nav.classList.contains("open");
+
   const shouldOpen =
     typeof forceState === "boolean"
       ? forceState
-      : !nav.classList.contains("open");
+      : !wasOpen;
 
   nav.classList.toggle("open", shouldOpen);
 
   if (backdrop) {
     backdrop.classList.toggle("show", shouldOpen);
+    backdrop.setAttribute("aria-hidden", String(!shouldOpen));
   }
 
   if (burger) {
@@ -194,7 +192,6 @@ function toggleMenu(forceState) {
       shouldOpen ? "Close menu" : "Open menu"
     );
 
-    // X when open, hamburger when closed.
     burger.innerHTML = shouldOpen
       ? `
         <svg
@@ -207,6 +204,7 @@ function toggleMenu(forceState) {
           stroke-width="2"
           stroke-linecap="round"
           aria-hidden="true"
+          focusable="false"
         >
           <path d="M18 6 6 18"></path>
           <path d="m6 6 12 12"></path>
@@ -223,19 +221,35 @@ function toggleMenu(forceState) {
           stroke-width="2"
           stroke-linecap="round"
           aria-hidden="true"
+          focusable="false"
         >
           <path d="M4 6h16"></path>
           <path d="M4 12h16"></path>
           <path d="M4 18h16"></path>
         </svg>
       `;
+
+    // Restore focus when closing an open mobile menu.
+    if (
+      wasOpen &&
+      !shouldOpen &&
+      window.matchMedia("(max-width: 800px)").matches
+    ) {
+      burger.focus();
+    }
   }
 }
 
 document.addEventListener("DOMContentLoaded", renderNavigation);
 
+// Escape closes the mobile menu.
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
+  if (event.key !== "Escape") return;
+
+  const nav = document.querySelector("#nav");
+
+  if (nav?.classList.contains("open")) {
+    event.preventDefault();
     toggleMenu(false);
   }
 });
